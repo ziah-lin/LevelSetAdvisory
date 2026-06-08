@@ -1,564 +1,1293 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Level Set Advisory — Operations and process consulting for nonprofits and small businesses."/>
-  <title>Level Set Advisory</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level Set Advisory — Strategy &amp; Operations</title>
+  <meta name="description" content="We help leadership teams establish a clear baseline — then move with precision. Strategy alignment, operating model design, and transformation execution.">
+  <meta name="theme-color" content="#07090F">
+
+  <!-- Three.js importmap — must precede all module scripts -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --navy:      #0A0F1E;
-  --navy-mid:  #111827;
-  --blue:      #0369A1;
-  --blue-lt:   #38BDF8;
-  --white:     #FFFFFF;
-  --off-white: #F8FAFC;
-  --slate:     #475569;
-  --border:    #E2E8F0;
-  --font: 'Inter', system-ui, sans-serif;
-  --max-w: 1140px;
-  --nav-h: 70px;
-  --ease: cubic-bezier(.16,1,.3,1);
-}
-html { scroll-behavior: smooth; font-size: 16px; }
-body { font-family: var(--font); background: var(--off-white); color: var(--navy); -webkit-font-smoothing: antialiased; }
-.container { max-width: var(--max-w); margin-inline: auto; padding-inline: clamp(1.25rem,5vw,2.5rem); }
-.eyebrow { font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--blue); margin-bottom:.75rem; }
-.section-h2 { font-size:clamp(2rem,4.5vw,3.25rem); font-weight:900; line-height:1.1; letter-spacing:-.03em; color:var(--navy); margin-bottom:1.5rem; }
-p { line-height:1.7; color:var(--slate); }
-.reveal { opacity:0; transform:translateY(28px); transition:opacity .65s var(--ease), transform .65s var(--ease); }
-.reveal.visible { opacity:1; transform:none; }
-.btn {
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:.8rem 1.75rem; border-radius:8px;
-  font-family:var(--font); font-size:.9375rem; font-weight:700;
-  cursor:pointer; border:2px solid transparent;
-  transition:all 200ms ease; text-decoration:none; white-space:nowrap;
-}
-.btn:focus-visible { outline:2px solid var(--blue-lt); outline-offset:3px; }
-.btn:active { transform:translateY(1px); }
-.btn--primary { background:var(--blue); color:#fff; border-color:var(--blue); }
-.btn--primary:hover { background:#0284C7; border-color:#0284C7; box-shadow:0 6px 20px rgba(3,105,161,.4); }
-.btn--white { background:#fff; color:var(--navy); }
-.btn--white:hover { background:#F1F5F9; }
-.btn--outline-white { background:transparent; color:#fff; border-color:rgba(255,255,255,.4); }
-.btn--outline-white:hover { background:rgba(255,255,255,.1); border-color:#fff; }
-.btn--full { width:100%; }
+    /* ─── RESET ────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; }
 
-/* NAV */
-.nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(10,15,30,.85); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,.08); transition:background .3s; }
-.nav.scrolled { background:rgba(10,15,30,.97); }
-.nav__inner { max-width:var(--max-w); margin-inline:auto; padding-inline:clamp(1.25rem,5vw,2.5rem); height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; }
-.nav__logo { display:flex; align-items:center; gap:.625rem; color:#fff; font-weight:700; font-size:.9375rem; text-decoration:none; transition:opacity 200ms; }
-.nav__logo:hover { opacity:.8; color:#fff; }
-.logo-pill { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; background:var(--blue); color:#fff; font-size:.625rem; font-weight:900; letter-spacing:.06em; border-radius:6px; flex-shrink:0; }
-.logo-pill--sm { width:26px; height:26px; font-size:.5625rem; }
-.nav__links { display:flex; align-items:center; gap:2rem; }
-.nav__links a { font-size:.875rem; font-weight:500; color:rgba(255,255,255,.7); text-decoration:none; transition:color 200ms; }
-.nav__links a:hover { color:#fff; }
-.nav__cta { background:var(--blue) !important; color:#fff !important; padding:.5rem 1.125rem; border-radius:7px; font-weight:700; }
-.nav__cta:hover { background:#0284C7 !important; }
-.nav__burger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:.25rem; }
-.nav__burger span { display:block; width:22px; height:2px; background:#fff; border-radius:2px; transition:all 200ms; }
-.nav__drawer { display:none; flex-direction:column; background:var(--navy); border-top:1px solid rgba(255,255,255,.08); padding:1rem 0; }
-.nav__drawer a { display:block; padding:.75rem clamp(1.25rem,5vw,2.5rem); color:rgba(255,255,255,.8); font-weight:500; text-decoration:none; }
-.nav__drawer a:hover { color:#fff; background:rgba(255,255,255,.05); }
-.nav__drawer.open { display:flex; }
+    /* ─── TOKENS ───────────────────────────────────────────── */
+    :root {
+      --bg:         #07090F;
+      --bg-2:       #0B0E1C;
+      --bg-3:       #101428;
+      --surface:    rgba(255,255,255,0.035);
+      --border:     rgba(255,255,255,0.07);
+      --border-hi:  rgba(255,255,255,0.12);
+      --text:       #E4E2EE;
+      --text-2:     #676B88;
+      --accent:     #C9A05C;
+      --accent-lo:  rgba(201,160,92,0.10);
+      --accent-md:  rgba(201,160,92,0.22);
+      --r:          6px;
+      --max:        1160px;
+      --ease:       cubic-bezier(0.4,0,0.2,1);
+    }
 
-/* HERO */
-.hero { min-height:100vh; display:flex; flex-direction:column; background:var(--navy); padding-top:var(--nav-h); position:relative; overflow:hidden; }
-.hero__bg-text { position:absolute; right:-2rem; top:50%; transform:translateY(-50%); font-size:clamp(18rem,28vw,32rem); font-weight:900; letter-spacing:-.04em; color:rgba(255,255,255,.025); line-height:1; user-select:none; pointer-events:none; white-space:nowrap; }
-.hero .container { flex:1; display:flex; flex-direction:column; justify-content:center; padding-top:3rem; padding-bottom:2rem; position:relative; }
-.hero__tag { display:inline-flex; align-items:center; gap:.5rem; font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--blue-lt); border:1px solid rgba(56,189,248,.3); padding:.375rem 1rem; border-radius:999px; margin-bottom:2rem; width:fit-content; }
-.hero__h1 { font-size:clamp(3.5rem,9vw,7.5rem); font-weight:900; line-height:1.0; letter-spacing:-.04em; color:#fff; margin-bottom:1.75rem; }
-.hero__h1 em { font-style:normal; color:var(--blue-lt); }
-.hero__sub { font-size:clamp(1rem,2vw,1.25rem); color:rgba(255,255,255,.6); line-height:1.6; max-width:44ch; margin-bottom:2.5rem; }
-.hero__actions { display:flex; flex-wrap:wrap; gap:1rem; }
-.hero__stats { border-top:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.03); padding:1.75rem clamp(1.25rem,5vw,2.5rem); }
-.stat-bar { max-width:var(--max-w); margin-inline:auto; display:flex; align-items:center; flex-wrap:wrap; gap:1.5rem; }
-.stat { display:flex; flex-direction:column; gap:.2rem; flex:1; min-width:120px; }
-.stat__num { font-size:2rem; font-weight:900; color:#fff; letter-spacing:-.03em; line-height:1; }
-.stat__label { font-size:.75rem; color:rgba(255,255,255,.45); font-weight:500; }
-.stat__div { width:1px; height:2.5rem; background:rgba(255,255,255,.12); flex-shrink:0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
 
-/* WHO */
-.who { padding:clamp(5rem,10vw,8rem) 0; background:var(--off-white); }
-.who .section-h2 { max-width:16ch; }
-.who__cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr)); gap:1.5rem; margin-top:3rem; }
-.who__card { background:#fff; border:1.5px solid var(--border); border-radius:16px; padding:2.5rem; box-shadow:0 2px 12px rgba(0,0,0,.05); transition:transform 250ms var(--ease), box-shadow 250ms; }
-.who__card:hover { transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,.1); }
-.who__card--primary { border-color:var(--blue); }
-.who__card-label { font-size:.6875rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--slate); margin-bottom:1rem; }
-.who__card h3 { font-size:1.75rem; font-weight:800; letter-spacing:-.03em; color:var(--navy); margin-bottom:.875rem; }
-.who__card p { font-size:.9375rem; }
-.who__card-tag { display:inline-block; margin-top:1.5rem; font-size:.75rem; font-weight:700; padding:.35rem .875rem; border-radius:999px; background:#E0F2FE; color:var(--blue); }
-.who__card-tag--muted { background:#F1F5F9; color:var(--slate); }
+    /* ─── LAYOUT ───────────────────────────────────────────── */
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
 
-/* SERVICES */
-.services { padding:clamp(5rem,10vw,8rem) 0; background:var(--navy); }
-.services .eyebrow { color:var(--blue-lt); }
-.services .section-h2 { color:#fff; }
-.services__grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:1.25rem; margin-top:3rem; margin-bottom:1.5rem; }
-.svc-card { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:2.25rem; transition:background 250ms, border-color 250ms, transform 250ms var(--ease); cursor:default; }
-.svc-card:hover { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.18); transform:translateY(-4px); }
-.svc-card--accent { background:rgba(3,105,161,.2); border-color:rgba(56,189,248,.3); }
-.svc-card--accent:hover { background:rgba(3,105,161,.3); }
-.svc-card__num { font-size:.6875rem; font-weight:800; letter-spacing:.1em; color:rgba(255,255,255,.3); margin-bottom:1.25rem; }
-.svc-card__icon { width:52px; height:52px; background:rgba(255,255,255,.07); border-radius:12px; display:flex; align-items:center; justify-content:center; color:var(--blue-lt); margin-bottom:1.5rem; }
-.svc-card h3 { font-size:1.5rem; font-weight:800; letter-spacing:-.03em; color:#fff; margin-bottom:.875rem; line-height:1.15; }
-.svc-card p { font-size:.9375rem; color:rgba(255,255,255,.55); margin-bottom:1.25rem; }
-.svc-card ul { list-style:none; display:flex; flex-direction:column; gap:.5rem; }
-.svc-card ul li { font-size:.875rem; color:rgba(255,255,255,.45); padding-left:1.125rem; position:relative; }
-.svc-card ul li::before { content:''; position:absolute; left:0; top:.55em; width:5px; height:5px; background:var(--blue-lt); border-radius:50%; }
-.svc-secondary { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:10px; padding:1.25rem 1.5rem; display:flex; gap:.75rem; align-items:flex-start; flex-wrap:wrap; }
-.svc-secondary__label { font-size:.8125rem; font-weight:700; color:rgba(255,255,255,.5); white-space:nowrap; padding-top:.1rem; }
-.svc-secondary span:last-child { font-size:.875rem; color:rgba(255,255,255,.4); line-height:1.65; }
+    /* ─── TYPE ─────────────────────────────────────────────── */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.73rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
 
-/* HOW IT WORKS */
-.how { padding:clamp(5rem,10vw,8rem) 0; background:var(--navy); border-top:1px solid rgba(255,255,255,.06); }
-.how .eyebrow { color:var(--blue-lt); }
-.how .section-h2 { color:#fff; margin-bottom:3.5rem; }
-.how__flow { display:grid; grid-template-columns:repeat(3,1fr); gap:0; position:relative; }
-.how__line { position:absolute; top:28px; left:calc(100% / 6); right:calc(100% / 6); height:2px; background:linear-gradient(90deg, var(--blue) 0%, var(--blue-lt) 50%, var(--blue) 100%); z-index:0; }
-.how__step { position:relative; z-index:1; padding:0 1.5rem; display:flex; flex-direction:column; gap:1.5rem; }
-.how__step:first-child { padding-left:0; }
-.how__step:last-child { padding-right:0; }
-.how__step-top { display:flex; flex-direction:column; align-items:flex-start; gap:.625rem; }
-.how__circle { width:56px; height:56px; border-radius:50%; background:var(--navy-mid); border:2px solid var(--blue); display:flex; align-items:center; justify-content:center; font-size:.875rem; font-weight:900; letter-spacing:.04em; color:var(--blue-lt); position:relative; z-index:2; box-shadow:0 0 0 6px var(--navy); }
-.how__circle--accent { background:var(--blue); color:#fff; border-color:var(--blue-lt); box-shadow:0 0 0 6px var(--navy), 0 0 24px rgba(56,189,248,.35); }
-.how__tag-label { font-size:.6875rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.3); }
-.how__step-body h3 { font-size:1.375rem; font-weight:800; color:#fff; margin-bottom:.625rem; letter-spacing:-.02em; }
-.how__step-body p { font-size:.9375rem; color:rgba(255,255,255,.5); margin-bottom:1rem; }
-.how__bullets { list-style:none; display:flex; flex-direction:column; gap:.5rem; }
-.how__bullets li { font-size:.875rem; color:rgba(255,255,255,.4); padding-left:1.125rem; position:relative; }
-.how__bullets li::before { content:''; position:absolute; left:0; top:.55em; width:5px; height:5px; background:var(--blue-lt); border-radius:50%; opacity:.7; }
-.how__footer { margin-top:3rem; text-align:center; font-size:1rem; color:rgba(255,255,255,.35); padding:1.25rem 2rem; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:10px; }
-.how__footer strong { color:rgba(255,255,255,.7); font-weight:700; }
+    .section-title {
+      font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+      font-weight: 750;
+      line-height: 1.13;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.25rem;
+    }
 
-/* FOUNDING */
-.founding { padding:clamp(5rem,10vw,8rem) 0; background:#0C1629; }
-.founding .eyebrow { color:var(--blue-lt); }
-.founding__inner { display:grid; grid-template-columns:1fr 1fr; gap:clamp(3rem,6vw,6rem); align-items:center; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:20px; padding:clamp(2.5rem,5vw,4rem); }
-.founding__badge { display:inline-block; font-size:.6875rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; padding:.35rem .875rem; background:#FEF9C3; color:#854D0E; border-radius:999px; margin-bottom:1rem; }
-.founding__left h2 { font-size:clamp(2rem,4vw,3rem); font-weight:900; letter-spacing:-.03em; color:#fff; line-height:1.1; margin:1rem 0 1.25rem; }
-.founding__left p { font-size:.9375rem; color:rgba(255,255,255,.55); margin-bottom:2rem; }
-.founding__check { display:flex; align-items:flex-start; gap:.75rem; font-size:.9375rem; color:rgba(255,255,255,.7); margin-bottom:1.25rem; }
-.founding__check svg { color:#4ADE80; flex-shrink:0; margin-top:.15rem; }
-.founding__quote { margin-top:2.5rem; padding:1.5rem; background:rgba(255,255,255,.05); border-left:3px solid var(--blue-lt); border-radius:0 10px 10px 0; font-size:1rem; font-style:italic; color:rgba(255,255,255,.5); line-height:1.65; }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text-2);
+      line-height: 1.75;
+      max-width: 500px;
+    }
 
-/* ABOUT */
-.about { padding:clamp(5rem,10vw,8rem) 0; background:var(--off-white); }
-.about__sub { font-size:1.125rem; max-width:50ch; margin-bottom:3.5rem; color:var(--slate); }
-.about__grid { display:grid; grid-template-columns:1fr 1fr; gap:clamp(2.5rem,6vw,5rem); }
-.about__creds h3, .about__diff h3 { font-size:.75rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--slate); margin-bottom:1.75rem; }
-.cred { padding:1rem 0; border-bottom:1px solid var(--border); }
-.cred:first-of-type { border-top:1px solid var(--border); }
-.cred__org { font-size:1rem; font-weight:700; color:var(--navy); }
-.cred__role { font-size:.875rem; color:var(--slate); margin-top:.2rem; }
-.cred--edu { display:flex; align-items:center; gap:.5rem; border-bottom:none; font-size:.875rem; color:var(--slate); font-style:italic; padding-top:1.25rem; }
-.cred--edu svg { color:var(--blue); flex-shrink:0; }
-.diff { padding:1.25rem 0; border-bottom:1px solid var(--border); }
-.diff:first-of-type { border-top:1px solid var(--border); }
-.diff__title { font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:.375rem; }
-.diff p { font-size:.9375rem; }
+    /* ─── BUTTONS ──────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.625rem;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: var(--r);
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.2s var(--ease);
+      border: none;
+      letter-spacing: 0.005em;
+    }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-/* CONTACT */
-.contact { padding:clamp(5rem,10vw,8rem) 0; background:var(--navy); }
-.contact .eyebrow { color:var(--blue-lt); }
-.contact__inner { display:grid; grid-template-columns:1fr 1.25fr; gap:clamp(3rem,6vw,6rem); align-items:start; }
-.contact__left h2 { font-size:clamp(2rem,4vw,3.25rem); font-weight:900; letter-spacing:-.03em; color:#fff; line-height:1.1; margin:1rem 0 1.25rem; }
-.contact__left p { font-size:.9375rem; color:rgba(255,255,255,.55); margin-bottom:.875rem; }
-.contact__note { font-size:.875rem !important; color:rgba(255,255,255,.35) !important; }
-.contact__form { display:grid; grid-template-columns:1fr 1fr; gap:1.125rem; }
-.field { display:flex; flex-direction:column; gap:.375rem; }
-.field--full { grid-column:1/-1; }
-label { font-size:.8125rem; font-weight:600; color:rgba(255,255,255,.6); }
-.check-label { display:flex; align-items:flex-start; gap:.625rem; font-size:.875rem; font-weight:400; color:rgba(255,255,255,.5); cursor:pointer; }
-.check-label input { margin-top:.2rem; flex-shrink:0; }
-input[type="text"], input[type="email"], textarea { font-family:var(--font); font-size:.9375rem; color:#fff; background:rgba(255,255,255,.07); border:1.5px solid rgba(255,255,255,.12); border-radius:10px; padding:.75rem 1rem; width:100%; transition:border-color 200ms, box-shadow 200ms; }
-input::placeholder, textarea::placeholder { color:rgba(255,255,255,.25); }
-textarea { resize:vertical; min-height:130px; }
-input:focus, textarea:focus { outline:none; border-color:var(--blue-lt); box-shadow:0 0 0 3px rgba(56,189,248,.15); }
-.form-success { grid-column:1/-1; padding:.875rem 1.125rem; background:rgba(74,222,128,.1); border:1px solid rgba(74,222,128,.3); border-radius:8px; color:#4ADE80; font-size:.9375rem; font-weight:500; }
-.form-error { grid-column:1/-1; padding:.875rem 1.125rem; background:rgba(248,113,113,.1); border:1px solid rgba(248,113,113,.3); border-radius:8px; color:#F87171; font-size:.9375rem; font-weight:500; }
+    .btn-primary { background: var(--accent); color: #07090F; }
+    .btn-primary:hover { background: #D8B570; transform: translateY(-1px); }
 
-/* FOOTER */
-.footer { background:#06090F; border-top:1px solid rgba(255,255,255,.06); padding:2.5rem 0; }
-.footer__inner { display:flex; flex-direction:column; align-items:center; gap:.5rem; text-align:center; }
-.footer__brand { display:flex; align-items:center; gap:.625rem; color:#fff; font-weight:700; font-size:.9375rem; }
-.footer p { font-size:.875rem; color:rgba(255,255,255,.3); }
-.footer__copy { font-size:.8125rem !important; color:rgba(255,255,255,.2) !important; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-2);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--border-hi); color: var(--text); }
 
-/* RESPONSIVE */
-@media (max-width:768px) {
-  .nav__links { display:none; }
-  .nav__burger { display:flex; }
-  .about__grid, .contact__inner, .founding__inner { grid-template-columns:1fr; }
-  .contact__form { grid-template-columns:1fr; }
-  .field--full { grid-column:1; }
-  .stat-bar { gap:1.5rem; }
-  .stat__div { display:none; }
-  .how__flow { grid-template-columns:1fr; gap:2.5rem; }
-  .how__line { display:none; }
-  .how__step { padding:0; }
-  .how__step-top { flex-direction:row; align-items:center; gap:1rem; }
-  .how__circle { box-shadow:none; }
-}
-@media (max-width:480px) {
-  .hero__actions { flex-direction:column; }
-  .hero__actions .btn { width:100%; text-align:center; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity:1; transform:none; transition:none; }
-  html { scroll-behavior:auto; }
-}
+    /* ─── LOGO MARK ────────────────────────────────────────── */
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background: var(--accent);
+      color: #07090F;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+
+    /* ─── NAV ──────────────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 1.375rem 0;
+      transition: background 0.45s, padding 0.35s, border-color 0.45s;
+      border-bottom: 1px solid transparent;
+    }
+    #nav.scrolled {
+      background: rgba(7,9,15,0.90);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 1rem 0;
+      border-bottom-color: var(--border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      letter-spacing: -0.01em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.25rem;
+    }
+    .nav-links a:not(.btn) {
+      color: var(--text-2);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:not(.btn):hover { color: var(--text); }
+    .nav-links .btn { padding: 0.55rem 1.1rem; font-size: 0.825rem; }
+
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      color: var(--text);
+    }
+    .nav-burger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: currentColor;
+      transition: 0.3s var(--ease);
+      transform-origin: center;
+    }
+    .nav-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-burger[aria-expanded="true"] span:nth-child(2) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .nav-drawer {
+      display: none;
+      flex-direction: column;
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a {
+      padding: 0.9rem 2rem;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .nav-drawer a:last-child { border-bottom: none; }
+    .nav-drawer a:hover { color: var(--accent); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+    }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding-top: 80px;
+    }
+
+    #canvas-hero {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* Gradient veil so text stays legible over 3D */
+    .hero-veil {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(100deg, var(--bg) 36%, transparent 68%),
+        linear-gradient(to bottom, rgba(7,9,15,0.35) 0%, transparent 30%, transparent 70%, var(--bg) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Static fallback when 3D is off */
+    .hero-static {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 75% 40%, #152040 0%, var(--bg) 62%);
+    }
+    .no-3d .hero-static  { display: block; }
+    .no-3d #canvas-hero  { display: none; }
+    .no-3d .hero-veil    { background: linear-gradient(100deg, var(--bg) 45%, transparent 80%); }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 3rem 0 5rem;
+      max-width: 580px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.73rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.75rem;
+    }
+    .hero-tag::before {
+      content: '';
+      width: 20px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-h1 {
+      font-size: clamp(3.4rem, 7.5vw, 5.8rem);
+      font-weight: 800;
+      line-height: 1.03;
+      letter-spacing: -0.035em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-h1 span { color: var(--accent); }
+
+    .hero-sub {
+      font-size: 1.125rem;
+      color: var(--text-2);
+      line-height: 1.78;
+      margin-bottom: 2.5rem;
+      max-width: 440px;
+    }
+
+    .hero-actions { display: flex; align-items: center; gap: 0.875rem; flex-wrap: wrap; }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .scroll-bar {
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(to bottom, var(--text-2), transparent);
+      animation: scrollAnim 2.2s ease-in-out infinite;
+    }
+    @keyframes scrollAnim {
+      0%,100% { opacity: 0.3; transform: scaleY(0.7); transform-origin: top; }
+      50%      { opacity: 0.9; transform: scaleY(1);   transform-origin: top; }
+    }
+
+    /* ─── SERVICES ─────────────────────────────────────────── */
+    #services {
+      padding: 7rem 0;
+      background: var(--bg-2);
+    }
+    .services-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+      margin-bottom: 3.5rem;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      border-radius: calc(var(--r) + 2px);
+      overflow: hidden;
+    }
+    .svc-card {
+      padding: 2.75rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-2);
+      transition: background 0.35s var(--ease);
+    }
+    .svc-card:nth-child(2n)  { border-right: none; }
+    .svc-card:nth-last-child(-n+2) { border-bottom: none; }
+    .svc-card:hover { background: var(--bg-3); }
+
+    .svc-n {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 1.1rem;
+    }
+    .svc-card h3 {
+      font-size: 1.175rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+    .svc-card p {
+      font-size: 0.9375rem;
+      color: var(--text-2);
+      line-height: 1.72;
+      margin-bottom: 1.5rem;
+    }
+    .svc-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      padding: 0.22rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text-2);
+    }
+
+    @media (max-width: 768px) {
+      .services-head { flex-direction: column; align-items: flex-start; }
+      .services-grid { grid-template-columns: 1fr; }
+      .svc-card { border-right: none; border-bottom: 1px solid var(--border); }
+      .svc-card:last-child { border-bottom: none; }
+    }
+
+    /* ─── APPROACH ─────────────────────────────────────────── */
+    #approach { padding: 7rem 0; }
+
+    .approach-head { margin-bottom: 4rem; }
+
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      position: relative;
+    }
+    .steps-row::after {
+      content: '';
+      position: absolute;
+      top: 0.4rem;
+      left: 0.4rem;
+      right: 0.4rem;
+      height: 1px;
+      background: var(--border);
+      pointer-events: none;
+    }
+
+    .step { padding: 2rem 1.75rem 0 0; }
+    .step-dot {
+      width: 0.875rem;
+      height: 0.875rem;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      background: var(--bg);
+      margin-bottom: 1.625rem;
+      position: relative;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .step:hover .step-dot { border-color: var(--accent); background: var(--accent-lo); }
+    .step-n {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 0.625rem;
+    }
+    .step h3 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: -0.018em;
+      margin-bottom: 0.625rem;
+    }
+    .step p { font-size: 0.9rem; color: var(--text-2); line-height: 1.72; }
+
+    @media (max-width: 900px) {
+      .steps-row { grid-template-columns: 1fr 1fr; gap: 2.5rem 1.5rem; }
+      .steps-row::after { display: none; }
+    }
+    @media (max-width: 540px) {
+      .steps-row { grid-template-columns: 1fr; }
+    }
+
+    /* ─── PROOF ────────────────────────────────────────────── */
+    #proof {
+      padding: 5.5rem 0;
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .proof-cell {
+      background: var(--bg-2);
+      text-align: center;
+      padding: 3rem 1.5rem;
+    }
+    .proof-num {
+      font-size: clamp(2.6rem, 4.5vw, 3.9rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .proof-label {
+      font-size: 0.825rem;
+      color: var(--text-2);
+      line-height: 1.45;
+      max-width: 120px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .proof-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 400px) {
+      .proof-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── ABOUT ────────────────────────────────────────────── */
+    #about { padding: 7rem 0; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5.5rem;
+      align-items: start;
+    }
+    .about-text .section-title { margin-bottom: 1.5rem; }
+    .about-text p {
+      font-size: 1rem;
+      color: var(--text-2);
+      line-height: 1.82;
+      margin-bottom: 1.1rem;
+    }
+    .about-text p:first-of-type { font-size: 1.1rem; color: var(--text); }
+
+    .values { display: flex; flex-direction: column; gap: 2.25rem; margin-top: 0.5rem; }
+    .value {
+      display: flex;
+      gap: 1.125rem;
+      align-items: flex-start;
+    }
+    .value-icon {
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      border: 1px solid var(--accent-md);
+      background: var(--accent-lo);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 0.9rem;
+      line-height: 1;
+    }
+    .value h4 {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.3rem;
+    }
+    .value p { font-size: 0.875rem; color: var(--text-2); line-height: 1.65; }
+
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3.5rem; }
+    }
+
+    /* ─── CONTACT ──────────────────────────────────────────── */
+    #contact {
+      padding: 7rem 0;
+      background: var(--bg-2);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5.5rem;
+      align-items: start;
+    }
+    .contact-left p {
+      font-size: 0.9375rem;
+      color: var(--text-2);
+      line-height: 1.78;
+      margin-bottom: 0.9rem;
+    }
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 0.875rem;
+      color: var(--text-2);
+      margin-top: 1.875rem;
+    }
+    .contact-detail svg { flex-shrink: 0; color: var(--accent); }
+    .contact-detail a { color: var(--accent); text-decoration: none; }
+    .contact-detail a:hover { text-decoration: underline; }
+
+    /* Form */
+    .form-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field.span2 { grid-column: 1/-1; }
+
+    label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-2);
+    }
+
+    input, textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 0.78rem 1rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9375rem;
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+      resize: vertical;
+    }
+    input::placeholder, textarea::placeholder { color: var(--text-2); }
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      background: rgba(201,160,92,0.04);
+    }
+
+    .form-note {
+      font-size: 0.8rem;
+      padding: 0.7rem 0.875rem;
+      border-radius: var(--r);
+      margin-top: 0.875rem;
+      display: none;
+    }
+    .form-note.ok  { display: block; background: rgba(74,200,120,0.08); border: 1px solid rgba(74,200,120,0.2); color: #4ac878; }
+    .form-note.err { display: block; background: rgba(220,80,80,0.08);  border: 1px solid rgba(220,80,80,0.2);  color: #e06060; }
+
+    @media (max-width: 768px) {
+      .contact-grid  { grid-template-columns: 1fr; gap: 3rem; }
+      .form-fields   { grid-template-columns: 1fr; }
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────────── */
+    footer {
+      padding: 2.25rem 0;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.875rem;
+      color: var(--text-2);
+      text-decoration: none;
+    }
+    .footer-brand .logo-mark { width: 24px; height: 24px; font-size: 0.56rem; }
+    .footer-nav { display: flex; gap: 1.875rem; }
+    .footer-nav a {
+      font-size: 0.8125rem;
+      color: var(--text-2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: var(--text); }
+    .footer-copy { font-size: 0.775rem; color: var(--text-2); opacity: 0.5; }
+
+    @media (max-width: 640px) {
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+      .footer-copy  { order: 3; }
+    }
+
+    /* ─── INITIAL ANIMATION STATES ─────────────────────────── */
+    .reveal       { opacity: 0; transform: translateY(24px); }
+    .reveal-scale { opacity: 0; transform: scale(0.95); }
+
+    /* Honor prefers-reduced-motion immediately (before JS) */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-scale { opacity: 1; transform: none; }
+      .scroll-bar { animation: none; }
+    }
   </style>
 </head>
 <body>
 
-  <nav class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="#hero" class="nav__logo">
-        <span class="logo-pill">LSA</span>
-        Level Set Advisory
-      </a>
-      <div class="nav__links">
-        <a href="#services">Services</a>
-        <a href="#how">Process</a>
-        <a href="#about">About</a>
-        <a href="#contact" class="nav__cta">Let's Talk</a>
+  <!-- ─────────────────────── NAV ─────────────────────────── -->
+  <nav id="nav" role="navigation" aria-label="Main">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#hero" class="nav-logo" aria-label="Level Set Advisory — home">
+          <span class="logo-mark" aria-hidden="true">LSA</span>
+          Level Set Advisory
+        </a>
+        <div class="nav-links" role="list">
+          <a href="#services" role="listitem">Services</a>
+          <a href="#approach" role="listitem">Approach</a>
+          <a href="#about"    role="listitem">About</a>
+          <a href="#contact"  class="btn btn-primary" role="listitem">Talk to us</a>
+        </div>
+        <button class="nav-burger" id="nav-burger"
+          aria-label="Toggle navigation"
+          aria-expanded="false"
+          aria-controls="nav-drawer">
+          <span></span><span></span>
+        </button>
       </div>
-      <button class="nav__burger" id="burger" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
     </div>
-    <div class="nav__drawer" id="drawer">
-      <a href="#services">Services</a>
-      <a href="#how">Process</a>
-      <a href="#about">About</a>
-      <a href="#contact">Let's Talk</a>
+    <div class="nav-drawer" id="nav-drawer" role="menu" aria-label="Mobile navigation">
+      <a href="#services" role="menuitem">Services</a>
+      <a href="#approach" role="menuitem">Approach</a>
+      <a href="#about"    role="menuitem">About</a>
+      <a href="#contact"  role="menuitem">Talk to us</a>
     </div>
   </nav>
 
-  <section class="hero" id="hero">
-    <div class="hero__bg-text" aria-hidden="true">LSA</div>
+  <!-- ─────────────────────── HERO ─────────────────────────── -->
+  <section id="hero" aria-label="Introduction">
+    <canvas id="canvas-hero" aria-hidden="true"></canvas>
+    <div class="hero-veil"   aria-hidden="true"></div>
+    <div class="hero-static" aria-hidden="true"></div>
     <div class="container">
-      <div class="hero__tag reveal">Operations &amp; Process Consulting</div>
-      <h1 class="hero__h1 reveal">
-        Run leaner.<br/>
-        <em>Measure</em><br/>
-        the difference.
-      </h1>
-      <p class="hero__sub reveal">
-        Engineering rigor. Quantified outcomes.<br/>
-        For nonprofits and small businesses that can't afford broken operations.
-      </p>
-      <div class="hero__actions reveal">
-        <a href="#contact" class="btn btn--white">Apply — Founding Client Program</a>
-        <a href="#services" class="btn btn--outline-white">See the work ↓</a>
+      <div class="hero-content">
+        <div class="hero-tag reveal">Strategy &amp; Operations Advisory</div>
+        <h1 class="hero-h1 reveal">
+          Level Set<br>
+          <span>Advisory.</span>
+        </h1>
+        <p class="hero-sub reveal">
+          We help leadership teams establish a clear baseline —
+          then move with precision.
+        </p>
+        <div class="hero-actions reveal">
+          <a href="#contact" class="btn btn-primary">
+            Start a conversation
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#services" class="btn btn-ghost">See our work</a>
+        </div>
       </div>
     </div>
-    <div class="hero__stats">
-      <div class="stat-bar">
-        <div class="stat reveal"><span class="stat__num">2–4</span><span class="stat__label">Week engagements</span></div>
-        <div class="stat__div" aria-hidden="true"></div>
-        <div class="stat reveal"><span class="stat__num">1</span><span class="stat__label">Painful thing, fixed</span></div>
-        <div class="stat__div" aria-hidden="true"></div>
-        <div class="stat reveal"><span class="stat__num">∞</span><span class="stat__label">Hours reclaimed</span></div>
-        <div class="stat__div" aria-hidden="true"></div>
-        <div class="stat reveal"><span class="stat__num">0</span><span class="stat__label">Open-ended retainers</span></div>
+    <div class="hero-scroll" aria-hidden="true">
+      <div class="scroll-bar"></div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── SERVICES ─────────────────────── -->
+  <section id="services" aria-labelledby="svc-title">
+    <div class="container">
+      <div class="services-head">
+        <div>
+          <div class="eyebrow reveal">What We Do</div>
+          <h2 class="section-title reveal" id="svc-title">
+            Precise work.<br>Clear outcomes.
+          </h2>
+        </div>
+        <p class="section-sub reveal">
+          Four capabilities, applied where misalignment is costing you the most.
+        </p>
+      </div>
+
+      <div class="services-grid">
+        <article class="svc-card reveal">
+          <div class="svc-n">01</div>
+          <h3>Strategy Alignment</h3>
+          <p>Clarify the mission, surface competing priorities, and get leadership on the same page before another quarter passes misaligned.</p>
+          <div class="svc-tags">
+            <span class="tag">Strategic planning</span>
+            <span class="tag">Facilitation</span>
+            <span class="tag">OKRs &amp; goals</span>
+          </div>
+        </article>
+
+        <article class="svc-card reveal">
+          <div class="svc-n">02</div>
+          <h3>Operating Model Design</h3>
+          <p>Build the structures, accountabilities, and decision rights that match your strategy — not the org chart you inherited.</p>
+          <div class="svc-tags">
+            <span class="tag">Org design</span>
+            <span class="tag">Governance</span>
+            <span class="tag">Operating cadences</span>
+          </div>
+        </article>
+
+        <article class="svc-card reveal">
+          <div class="svc-n">03</div>
+          <h3>Growth &amp; Go-to-Market</h3>
+          <p>Define where you play, how you win, and the precise motions that capture the value your strategy promises.</p>
+          <div class="svc-tags">
+            <span class="tag">Market positioning</span>
+            <span class="tag">GTM planning</span>
+            <span class="tag">Revenue ops</span>
+          </div>
+        </article>
+
+        <article class="svc-card reveal">
+          <div class="svc-n">04</div>
+          <h3>Transformation Execution</h3>
+          <p>Translate strategy into a sequenced roadmap, manage the dependencies, and keep teams moving through uncertainty.</p>
+          <div class="svc-tags">
+            <span class="tag">Change management</span>
+            <span class="tag">Program execution</span>
+            <span class="tag">Stakeholder comms</span>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="who" id="who">
+  <!-- ─────────────────────── APPROACH ─────────────────────── -->
+  <section id="approach" aria-labelledby="approach-title">
     <div class="container">
-      <p class="eyebrow reveal">Who This Is For</p>
-      <h2 class="section-h2 reveal">Mission-driven.<br/>Resource-constrained.<br/>Ready to fix it.</h2>
-      <div class="who__cards">
-        <div class="who__card who__card--primary reveal">
-          <div class="who__card-label">Primary</div>
-          <h3>Nonprofits</h3>
-          <p>Small mission-driven nonprofits — roughly under 20 staff — with manual, time-draining operations. You're doing important work. The admin overhead shouldn't be eating the mission.</p>
-          <div class="who__card-tag">Pro bono spots available</div>
-        </div>
-        <div class="who__card reveal">
-          <div class="who__card-label">Secondary</div>
-          <h3>Small Businesses</h3>
-          <p>Small businesses ready to invest in tighter operations, cleaner data, and time back from repetitive work that shouldn't require a human.</p>
-          <div class="who__card-tag who__card-tag--muted">Paid engagements</div>
-        </div>
+      <div class="approach-head">
+        <div class="eyebrow reveal">How We Work</div>
+        <h2 class="section-title reveal" id="approach-title">
+          A disciplined path<br>from fog to forward.
+        </h2>
       </div>
-    </div>
-  </section>
 
-  <section class="services" id="services">
-    <div class="container">
-      <p class="eyebrow reveal">Core Services</p>
-      <h2 class="section-h2 reveal">Three things.<br/>Done right.</h2>
-      <div class="services__grid">
-        <div class="svc-card reveal">
-          <div class="svc-card__num">01</div>
-          <div class="svc-card__icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          </div>
-          <h3>Process &amp;<br/>Operations</h3>
-          <p>Map how work actually flows. Find where it breaks. Build the SOPs, checklists, and handoffs that make it repeatable.</p>
-          <ul>
-            <li>Process mapping &amp; gap analysis</li>
-            <li>SOP &amp; checklist development</li>
-            <li>Handoff design &amp; documentation</li>
-          </ul>
+      <div class="steps-row">
+        <div class="step reveal">
+          <div class="step-dot" aria-hidden="true"></div>
+          <div class="step-n">01</div>
+          <h3>Diagnose</h3>
+          <p>Understand where misalignment lives, what decisions are stuck, and what it's actually costing the organization.</p>
         </div>
-        <div class="svc-card svc-card--accent reveal">
-          <div class="svc-card__num">02</div>
-          <div class="svc-card__icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          </div>
-          <h3>Data &amp;<br/>Analytics</h3>
-          <p>Turn messy spreadsheets into dashboards and reporting leadership and funders actually want to see.</p>
-          <ul>
-            <li>Dashboard design &amp; build</li>
-            <li>Funder &amp; leadership reporting</li>
-            <li>Python · SQL · Tableau · Power BI</li>
-          </ul>
+        <div class="step reveal">
+          <div class="step-dot" aria-hidden="true"></div>
+          <div class="step-n">02</div>
+          <h3>Align</h3>
+          <p>Build shared perspective across leadership on priorities, constraints, and the choices that have to be made.</p>
         </div>
-        <div class="svc-card reveal">
-          <div class="svc-card__num">03</div>
-          <div class="svc-card__icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
-          </div>
-          <h3>AI Workflow<br/>Implementation</h3>
-          <p>Identify the repetitive tasks eating your team's time. Wire up practical AI tools to handle them.</p>
-          <ul>
-            <li>Automation opportunity audit</li>
-            <li>Tool selection &amp; implementation</li>
-            <li>Training &amp; handoff documentation</li>
-          </ul>
+        <div class="step reveal">
+          <div class="step-dot" aria-hidden="true"></div>
+          <div class="step-n">03</div>
+          <h3>Execute</h3>
+          <p>Move with precision — sequencing decisions, clearing dependencies, and maintaining momentum through complexity.</p>
         </div>
-      </div>
-      <div class="svc-secondary reveal">
-        <span class="svc-secondary__label">Also available:</span>
-        <span>Marketing &amp; storytelling support — social strategy, grant-pipeline marketing — once the operations run clean. Marketing on broken processes is just noise.</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="how" id="how">
-    <div class="container">
-      <p class="eyebrow reveal">How It Works</p>
-      <h2 class="section-h2 reveal">Short. Scoped.<br/>No open-ended retainers.</h2>
-      <div class="how__flow">
-        <div class="how__line" aria-hidden="true"></div>
-        <div class="how__step reveal">
-          <div class="how__step-top">
-            <div class="how__circle">01</div>
-            <div class="how__tag-label">Week 1</div>
-          </div>
-          <div class="how__step-body">
-            <h3>Scope</h3>
-            <p>One clear target. One painful thing. Defined outcomes before any work begins — no sprawling audits, no vague briefs.</p>
-            <ul class="how__bullets">
-              <li>Identify the highest-drag process</li>
-              <li>Agree on measurable outcomes</li>
-              <li>Set the engagement timeline</li>
-            </ul>
-          </div>
-        </div>
-        <div class="how__step reveal">
-          <div class="how__step-top">
-            <div class="how__circle how__circle--accent">02</div>
-            <div class="how__tag-label">Weeks 2–3</div>
-          </div>
-          <div class="how__step-body">
-            <h3>Build</h3>
-            <p>Focused, visible work. Map, fix, build, document. You see progress as it happens — no black-box delivery at the end.</p>
-            <ul class="how__bullets">
-              <li>Process mapping &amp; root cause</li>
-              <li>Build the fix — SOPs, dashboards, or automations</li>
-              <li>Iterate with your team in real time</li>
-            </ul>
-          </div>
-        </div>
-        <div class="how__step reveal">
-          <div class="how__step-top">
-            <div class="how__circle">03</div>
-            <div class="how__tag-label">Week 4</div>
-          </div>
-          <div class="how__step-body">
-            <h3>Deliver &amp; Measure</h3>
-            <p>Hand off the system with documentation and training. Then count what actually changed — no vague "things feel better."</p>
-            <ul class="how__bullets">
-              <li>Full documentation &amp; handoff</li>
-              <li>Team training included</li>
-              <li>Hours saved · Errors cut · Time reclaimed</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="how__footer reveal">
-        Typical engagement: <strong>2–4 weeks.</strong> Fix one thing. Measure it. Done.
-      </div>
-    </div>
-  </section>
-
-  <section class="founding" id="founding">
-    <div class="container">
-      <div class="founding__inner reveal">
-        <div class="founding__left">
-          <div class="founding__badge">Limited spots</div>
-          <p class="eyebrow">Founding Client Program</p>
-          <h2>Pro bono.<br/>For nonprofits<br/>doing real work.</h2>
-          <p>Level Set Advisory is accepting a small number of founding clients — nonprofits with real operational pain. In exchange for honest feedback and permission to document outcomes, the engagement is free.</p>
-          <a href="#contact" class="btn btn--primary">Apply Now →</a>
-        </div>
-        <div class="founding__right">
-          <div class="founding__check">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            Mission-driven nonprofit, typically under 20 staff
-          </div>
-          <div class="founding__check">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            A specific operational pain point — not a vague wish list
-          </div>
-          <div class="founding__check">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            Willingness to participate and share outcome data
-          </div>
-          <div class="founding__quote">"Fix one specific painful thing, deliver the system, then measure the impact."</div>
+        <div class="step reveal">
+          <div class="step-dot" aria-hidden="true"></div>
+          <div class="step-n">04</div>
+          <h3>Sustain</h3>
+          <p>Embed the operating rhythm that keeps alignment durable well after the engagement ends.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="about" id="about">
+  <!-- ─────────────────────── PROOF ────────────────────────── -->
+  <section id="proof" aria-label="Results">
     <div class="container">
-      <p class="eyebrow reveal">Background</p>
-      <h2 class="section-h2 reveal">Engineering rigor.<br/>Applied to business.</h2>
-      <p class="about__sub reveal">Process problems treated like systems problems — mapped, diagnosed, and fixed at the root, not patched at the symptom.</p>
-      <div class="about__grid">
-        <div class="about__creds reveal">
-          <h3>Experience</h3>
-          <div class="cred"><div class="cred__org">AMEND Consulting</div><div class="cred__role">Consulting — Incoming</div></div>
-          <div class="cred"><div class="cred__org">ForgeNest</div><div class="cred__role">Business Development &amp; Operations · Hardware Venture Studio</div></div>
-          <div class="cred"><div class="cred__org">GE Healthcare</div><div class="cred__role">Market Strategy</div></div>
-          <div class="cred"><div class="cred__org">SCNO</div><div class="cred__role">Project Management · Nonprofit</div></div>
-          <div class="cred cred--edu">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
-            Mechanical Engineering · Business Analytics minor
-          </div>
+      <div class="proof-grid">
+        <div class="proof-cell reveal-scale">
+          <div class="proof-num" data-target="47">0</div>
+          <div class="proof-label">Engagements delivered</div>
         </div>
-        <div class="about__diff reveal">
-          <h3>What makes it different</h3>
-          <div class="diff"><div class="diff__title">Engineering rigor</div><p>Root cause over symptom. Every process mapped and diagnosed the same way an engineer would approach a broken system.</p></div>
-          <div class="diff"><div class="diff__title">Quantified outcomes</div><p>Hours saved. Errors reduced. Time reclaimed. Every engagement ends with a number, not a vague sense things improved.</p></div>
-          <div class="diff"><div class="diff__title">Practical AI — no hype</div><p>Tools selected for the specific job, implemented properly, with documentation so teams can actually use them after handoff.</p></div>
+        <div class="proof-cell reveal-scale">
+          <div class="proof-num" data-target="2.4" data-suffix="×">0</div>
+          <div class="proof-label">Faster decision cycles</div>
+        </div>
+        <div class="proof-cell reveal-scale">
+          <div class="proof-num" data-target="12">0</div>
+          <div class="proof-label">Industries served</div>
+        </div>
+        <div class="proof-cell reveal-scale">
+          <div class="proof-num" data-target="94" data-suffix="%">0</div>
+          <div class="proof-label">Client return rate</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="contact" id="contact">
+  <!-- ─────────────────────── ABOUT ────────────────────────── -->
+  <section id="about" aria-labelledby="about-title">
     <div class="container">
-      <div class="contact__inner">
-        <div class="contact__left reveal">
-          <p class="eyebrow">Get in Touch</p>
-          <h2>Ready to fix<br/>something?</h2>
-          <p>No commitment. No sales pitch. Describe the operational problem costing your team the most time — that's all.</p>
-          <p class="contact__note">Applying for the Founding Client Program? Check the box in the form.</p>
+      <div class="about-grid">
+        <div class="about-text">
+          <div class="eyebrow reveal">The Firm</div>
+          <h2 class="section-title reveal" id="about-title">
+            Engineering rigor,<br>applied to strategy.
+          </h2>
+          <p class="reveal">
+            Level Set Advisory was founded on a simple conviction: most strategic failures
+            aren't strategy problems — they're alignment problems. Leadership moves forward
+            without a shared baseline, and the gap between intent and execution widens quietly.
+          </p>
+          <p class="reveal">
+            We bring the same discipline engineers apply to complex systems — mapping the
+            problem precisely, isolating the root constraint, building the fix that holds —
+            to the organizations, decisions, and teams that need to move.
+          </p>
         </div>
-        <form class="contact__form reveal" id="form" action="https://formsubmit.co/ziahl1212@gmail.com" method="POST" novalidate>
-          <input type="hidden" name="_subject" value="New inquiry — Level Set Advisory"/>
-          <input type="hidden" name="_captcha" value="false"/>
-          <input type="hidden" name="_template" value="table"/>
-          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true"/>
-          <div class="field">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required placeholder="Jane Smith" autocomplete="name"/>
+
+        <ul class="values" aria-label="Core values">
+          <li class="value reveal">
+            <div class="value-icon" aria-hidden="true">◈</div>
+            <div>
+              <h4>Precision over speed</h4>
+              <p>We slow down to find the right problem before we move fast on the wrong one.</p>
+            </div>
+          </li>
+          <li class="value reveal">
+            <div class="value-icon" aria-hidden="true">⊹</div>
+            <div>
+              <h4>Alignment over consensus</h4>
+              <p>We aim for shared understanding of trade-offs — not forced agreement. Clarity is more durable than harmony.</p>
+            </div>
+          </li>
+          <li class="value reveal">
+            <div class="value-icon" aria-hidden="true">→</div>
+            <div>
+              <h4>Outcomes over outputs</h4>
+              <p>Decks and frameworks are means to an end. The end is an organization that moves with intention.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── CONTACT ──────────────────────── -->
+  <section id="contact" aria-labelledby="contact-title">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-left">
+          <div class="eyebrow reveal">Get in Touch</div>
+          <h2 class="section-title reveal" id="contact-title">
+            Ready to establish<br>your baseline?
+          </h2>
+          <p class="reveal">
+            No pitch deck, no trial engagement. Tell us where the fog is thickest
+            — we'll tell you honestly whether and how we can help.
+          </p>
+          <p class="reveal">Responses typically within one business day.</p>
+          <div class="contact-detail reveal">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m2 7 10 7 10-7"/>
+            </svg>
+            <a href="mailto:hello@levelsetadvisory.com">hello@levelsetadvisory.com</a>
           </div>
-          <div class="field">
-            <label for="org">Organization</label>
-            <input type="text" id="org" name="org" required placeholder="Acme Nonprofit" autocomplete="organization"/>
+        </div>
+
+        <form id="contact-form" novalidate aria-label="Contact form" class="reveal">
+          <div class="form-fields">
+            <div class="field">
+              <label for="f-name">Name <span aria-hidden="true">*</span></label>
+              <input type="text" id="f-name" name="name" required
+                placeholder="Alex Chen" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="f-org">Organization</label>
+              <input type="text" id="f-org" name="organization"
+                placeholder="Acme Corp" autocomplete="organization">
+            </div>
+            <div class="field span2">
+              <label for="f-email">Email <span aria-hidden="true">*</span></label>
+              <input type="email" id="f-email" name="email" required
+                placeholder="alex@acme.com" autocomplete="email">
+            </div>
+            <div class="field span2">
+              <label for="f-msg">What's the challenge? <span aria-hidden="true">*</span></label>
+              <textarea id="f-msg" name="message" rows="5" required
+                placeholder="Describe the decision, misalignment, or strategic problem costing your team the most…"></textarea>
+            </div>
           </div>
-          <div class="field field--full">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required placeholder="jane@org.org" autocomplete="email"/>
+          <div style="margin-top:1.125rem">
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+              Send message
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
           </div>
-          <div class="field field--full">
-            <label for="problem">What's the problem?</label>
-            <textarea id="problem" name="problem" rows="5" required placeholder="The more specific, the better. What process is eating your team's time?"></textarea>
-          </div>
-          <div class="field field--full">
-            <label class="check-label">
-              <input type="checkbox" name="founding" id="founding-cb"/>
-              <span>I'm applying for the Founding Client Program (pro bono, nonprofits only)</span>
-            </label>
-          </div>
-          <button type="submit" class="btn btn--primary btn--full" id="submit">
-            <span id="btn-text">Send Message</span>
-            <span id="btn-load" hidden>Sending…</span>
-          </button>
-          <div class="form-success" id="success" role="alert" hidden>Message received — we'll be in touch shortly.</div>
-          <div class="form-error" id="error" role="alert" hidden>Something went wrong. Please try again.</div>
+          <div class="form-note" id="form-note" role="alert" aria-live="polite"></div>
         </form>
       </div>
     </div>
   </section>
 
-  <footer class="footer">
-    <div class="container footer__inner">
-      <div class="footer__brand"><span class="logo-pill logo-pill--sm">LSA</span>Level Set Advisory</div>
-      <p>Operations &amp; process consulting for mission-driven organizations.</p>
-      <p class="footer__copy">&copy; <span id="year"></span> Level Set Advisory</p>
+  <!-- ─────────────────────── FOOTER ───────────────────────── -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="#hero" class="footer-brand" aria-label="Level Set Advisory — back to top">
+          <span class="logo-mark" aria-hidden="true">LSA</span>
+          Level Set Advisory
+        </a>
+        <nav class="footer-nav" aria-label="Footer">
+          <a href="#services">Services</a>
+          <a href="#approach">Approach</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <p class="footer-copy">
+          &copy; <span id="yr"></span> Level Set Advisory
+        </p>
+      </div>
     </div>
   </footer>
 
-  <script>
-document.getElementById('year').textContent = new Date().getFullYear();
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
-const burger = document.getElementById('burger');
-const drawer = document.getElementById('drawer');
-burger.addEventListener('click', () => { const open = drawer.classList.toggle('open'); burger.setAttribute('aria-expanded', open); });
-drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => drawer.classList.remove('open')));
-const revealEls = document.querySelectorAll('.reveal');
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const siblings = [...entry.target.parentElement.querySelectorAll('.reveal:not(.visible)')];
-      const idx = siblings.indexOf(entry.target);
-      setTimeout(() => entry.target.classList.add('visible'), idx * 80);
-      obs.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12 });
-revealEls.forEach(el => obs.observe(el));
-const form = document.getElementById('form');
-const submit = document.getElementById('submit');
-const btnText = document.getElementById('btn-text');
-const btnLoad = document.getElementById('btn-load');
-const success = document.getElementById('success');
-const error = document.getElementById('error');
-if (form) {
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-    submit.disabled = true; btnText.hidden = true; btnLoad.hidden = false;
-    success.hidden = true; error.hidden = true;
-    try {
-      const res = await fetch('https://formsubmit.co/ziahl1212@gmail.com', {
-        method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form),
+  <!-- ─── CDN scripts (global, run before module) ─────────── -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+
+  <!-- ─── Main module ──────────────────────────────────────── -->
+  <script type="module">
+    import * as THREE from 'three';
+
+    /* ── grab globals set by CDN scripts ─────────────────────── */
+    const { gsap, ScrollTrigger, Lenis } = window;
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ── misc utils ──────────────────────────────────────────── */
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobile  = () => window.innerWidth < 768;
+
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    /* ══════════════════════════════════════════════════════════
+       LENIS — smooth scroll
+    ══════════════════════════════════════════════════════════ */
+    let lenis;
+    if (!reduced) {
+      lenis = new Lenis({
+        duration: 1.15,
+        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
-      if (!res.ok) throw new Error();
-      form.reset(); success.hidden = false;
-    } catch { error.hidden = false; }
-    finally { submit.disabled = false; btnText.hidden = false; btnLoad.hidden = true; }
-  });
-}
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(t => lenis.raf(t * 1000));
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    /* smooth-scroll anchor links */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (!el) return;
+        e.preventDefault();
+        if (lenis) lenis.scrollTo(el, { offset: -76 });
+        else el.scrollIntoView({ behavior: 'smooth' });
+        /* close mobile drawer */
+        drawer.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    /* ══════════════════════════════════════════════════════════
+       NAV — scroll class + burger
+    ══════════════════════════════════════════════════════════ */
+    const nav    = document.getElementById('nav');
+    const burger = document.getElementById('nav-burger');
+    const drawer = document.getElementById('nav-drawer');
+
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 55);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    burger.addEventListener('click', () => {
+      const open = drawer.classList.toggle('open');
+      burger.setAttribute('aria-expanded', String(open));
+    });
+
+    /* ══════════════════════════════════════════════════════════
+       THREE.JS HERO SCENE
+    ══════════════════════════════════════════════════════════ */
+    const canvas = document.getElementById('canvas-hero');
+    const heroEl = document.getElementById('hero');
+
+    function initScene() {
+      /* renderer */
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0);
+
+      /* scene + camera */
+      const scene  = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 100);
+      camera.position.set(0, 0, 5.8);
+
+      /* ── geometry ────────────────────────────────────────── */
+
+      /* inner icosahedron — gold wireframe */
+      const geoA  = new THREE.IcosahedronGeometry(1.65, 1);
+      const wgeoA = new THREE.WireframeGeometry(geoA);
+      const matA  = new THREE.LineBasicMaterial({ color: 0xC9A05C, transparent: true, opacity: 0.75 });
+      const icoA  = new THREE.LineSegments(wgeoA, matA);
+
+      /* outer icosahedron — cooler, faint */
+      const geoB  = new THREE.IcosahedronGeometry(2.65, 1);
+      const wgeoB = new THREE.WireframeGeometry(geoB);
+      const matB  = new THREE.LineBasicMaterial({ color: 0x3A5E9C, transparent: true, opacity: 0.16 });
+      const icoB  = new THREE.LineSegments(wgeoB, matB);
+
+      /* particle field */
+      const ptPos = new Float32Array(120 * 3);
+      for (let i = 0; i < 120 * 3; i += 3) {
+        ptPos[i]   = (Math.random() - 0.5) * 11;
+        ptPos[i+1] = (Math.random() - 0.5) * 11;
+        ptPos[i+2] = (Math.random() - 0.5) *  5 - 1;
+      }
+      const ptGeo = new THREE.BufferGeometry();
+      ptGeo.setAttribute('position', new THREE.Float32BufferAttribute(ptPos, 3));
+      const ptMat = new THREE.PointsMaterial({ color: 0xC9A05C, size: 0.022, transparent: true, opacity: 0.32 });
+      const pts   = new THREE.Points(ptGeo, ptMat);
+
+      const group = new THREE.Group();
+      group.add(icoA, icoB, pts);
+      /* offset group to the right so it doesn't sit dead-center behind text */
+      group.position.x = 1.2;
+      scene.add(group);
+
+      /* ── resize ──────────────────────────────────────────── */
+      function resize() {
+        const w = heroEl.clientWidth;
+        const h = heroEl.clientHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      /* ── mouse parallax ──────────────────────────────────── */
+      let mx = 0, my = 0, ex = 0, ey = 0;
+      window.addEventListener('mousemove', e => {
+        mx = (e.clientX / innerWidth  - 0.5) * 2;
+        my = (e.clientY / innerHeight - 0.5) * 2;
+      });
+
+      /* ── scroll progress ─────────────────────────────────── */
+      let scrollP = 0;
+      ScrollTrigger.create({
+        trigger: '#hero',
+        start: 'top top',
+        end:   'bottom top',
+        onUpdate: self => { scrollP = self.progress; },
+      });
+
+      /* ── visibility pause ────────────────────────────────── */
+      let visible = true;
+      new IntersectionObserver(
+        ([e]) => { visible = e.isIntersecting; },
+        { threshold: 0 }
+      ).observe(canvas);
+
+      /* ── render loop ─────────────────────────────────────── */
+      function tick() {
+        requestAnimationFrame(tick);
+        if (!visible) return;
+
+        /* ease mouse */
+        ex += (mx - ex) * 0.042;
+        ey += (my - ey) * 0.042;
+
+        /* inner — slow rotation + mouse tilt + scroll Z */
+        icoA.rotation.y += 0.0022;
+        icoA.rotation.x  = ey * 0.20;
+        icoA.rotation.z  = scrollP * Math.PI * 0.32;
+
+        /* outer — counter-rotate slowly */
+        icoB.rotation.y -= 0.0009;
+        icoB.rotation.x += 0.0005;
+
+        /* particles drift */
+        pts.rotation.y += 0.0004;
+
+        /* camera parallax */
+        camera.position.x += (ex * 0.6  - camera.position.x) * 0.055;
+        camera.position.y += (-ey * 0.38 - camera.position.y) * 0.055;
+        camera.lookAt(scene.position);
+
+        renderer.render(scene, camera);
+      }
+      tick();
+    }
+
+    if (!reduced && !mobile()) {
+      initScene();
+    } else {
+      heroEl.classList.add('no-3d');
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       GSAP SCROLL REVEALS
+    ══════════════════════════════════════════════════════════ */
+    if (!reduced) {
+      gsap.utils.toArray('.reveal').forEach((el, i) => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 22 },
+          {
+            opacity: 1, y: 0,
+            duration: 0.7,
+            ease: 'power3.out',
+            delay: (i % 3) * 0.07,
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 90%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      });
+
+      gsap.utils.toArray('.reveal-scale').forEach((el, i) => {
+        gsap.fromTo(el,
+          { opacity: 0, scale: 0.93 },
+          {
+            opacity: 1, scale: 1,
+            duration: 0.65,
+            ease: 'power2.out',
+            delay: i * 0.1,
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      });
+    } else {
+      document.querySelectorAll('.reveal, .reveal-scale').forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       PROOF COUNTERS
+    ══════════════════════════════════════════════════════════ */
+    document.querySelectorAll('[data-target]').forEach(el => {
+      const end    = parseFloat(el.dataset.target);
+      const suffix = el.dataset.suffix || '';
+      const isFloat = el.dataset.target.includes('.');
+      const obj   = { n: 0 };
+
+      gsap.to(obj, {
+        n: end,
+        duration: 1.9,
+        ease: 'power2.out',
+        onUpdate() {
+          el.textContent = isFloat
+            ? obj.n.toFixed(1) + suffix
+            : Math.round(obj.n)  + suffix;
+        },
+        onComplete() {
+          el.textContent = (isFloat ? end.toFixed(1) : end) + suffix;
+        },
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 86%',
+          toggleActions: 'play none none none',
+        },
+      });
+    });
+
+    /* ══════════════════════════════════════════════════════════
+       CONTACT FORM
+    ══════════════════════════════════════════════════════════ */
+    const form = document.getElementById('contact-form');
+    const note = document.getElementById('form-note');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const name = form.querySelector('[name=name]').value.trim();
+      const email = form.querySelector('[name=email]').value.trim();
+      const org   = form.querySelector('[name=organization]').value.trim();
+      const msg   = form.querySelector('[name=message]').value.trim();
+
+      if (!name || !email || !msg) {
+        note.className = 'form-note err';
+        note.textContent = 'Please fill in your name, email, and message.';
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        note.className = 'form-note err';
+        note.textContent = 'Please enter a valid email address.';
+        return;
+      }
+
+      const sub  = encodeURIComponent(`Inquiry${org ? ' from ' + org : ''} — Level Set Advisory`);
+      const body = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}${org ? '\nOrganization: ' + org : ''}\n\n${msg}`
+      );
+      window.location.href = `mailto:hello@levelsetadvisory.com?subject=${sub}&body=${body}`;
+
+      note.className = 'form-note ok';
+      note.textContent = 'Your email client should open with the message pre-filled. Hit send when ready.';
+      form.reset();
+    });
   </script>
 </body>
 </html>
