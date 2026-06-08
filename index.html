@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Level Set Advisory — Strategy &amp; Operations</title>
-  <meta name="description" content="We help leadership teams establish a clear baseline — then move with precision. Strategy alignment, operating model design, and transformation execution.">
+  <title>Level Set Advisory — Scoped Operations & Strategy Projects</title>
+  <meta name="description" content="Engineering-grade operations and strategy projects, scoped to ship in two to four weeks. Process and SOP work, financial models, market analysis, and decision dashboards.">
   <meta name="theme-color" content="#07090F">
 
-  <!-- Three.js importmap — must precede all module scripts -->
   <script type="importmap">
   {
     "imports": {
@@ -18,669 +17,242 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
-    /* ─── RESET ────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: auto; }
 
-    /* ─── TOKENS ───────────────────────────────────────────── */
     :root {
-      --bg:         #07090F;
-      --bg-2:       #0B0E1C;
-      --bg-3:       #101428;
-      --surface:    rgba(255,255,255,0.035);
-      --border:     rgba(255,255,255,0.07);
-      --border-hi:  rgba(255,255,255,0.12);
-      --text:       #E4E2EE;
-      --text-2:     #676B88;
-      --accent:     #C9A05C;
-      --accent-lo:  rgba(201,160,92,0.10);
-      --accent-md:  rgba(201,160,92,0.22);
-      --r:          6px;
-      --max:        1160px;
-      --ease:       cubic-bezier(0.4,0,0.2,1);
+      --bg:#07090F; --bg-2:#0B0E1C; --bg-3:#101428;
+      --surface:rgba(255,255,255,0.035);
+      --border:rgba(255,255,255,0.07); --border-hi:rgba(255,255,255,0.12);
+      --grid:rgba(201,160,92,0.05);
+      --text:#E4E2EE; --text-2:#676B88;
+      --accent:#C9A05C; --accent-lo:rgba(201,160,92,0.10); --accent-md:rgba(201,160,92,0.22);
+      --mono:'IBM Plex Mono', ui-monospace, monospace;
+      --r:6px; --max:1160px; --ease:cubic-bezier(0.4,0,0.2,1);
     }
 
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      font-family:'Inter', system-ui, sans-serif;
+      background:var(--bg); color:var(--text); line-height:1.6;
+      -webkit-font-smoothing:antialiased; overflow-x:hidden;
     }
 
-    /* ─── LAYOUT ───────────────────────────────────────────── */
-    .container { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
+    /* ── scroll progress / level line ── */
+    .level-progress { position:fixed; top:0; left:0; height:2px; width:100%; z-index:300; pointer-events:none; background:var(--border); }
+    .level-progress__fill { height:100%; width:100%; transform:scaleX(0); transform-origin:left; background:linear-gradient(90deg,var(--accent),#E6C589); box-shadow:0 0 10px var(--accent-md); }
+    .level-progress__bubble { position:absolute; top:50%; left:0; width:7px; height:7px; margin:-3.5px 0 0 -3.5px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent); }
 
-    /* ─── TYPE ─────────────────────────────────────────────── */
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.65rem;
-      font-size: 0.73rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.25rem;
-    }
-    .eyebrow::before {
-      content: '';
-      display: block;
-      width: 20px;
-      height: 1px;
-      background: var(--accent);
-      flex-shrink: 0;
+    .container { max-width:var(--max); margin:0 auto; padding:0 2rem; }
+
+    /* ── blueprint grid utility ── */
+    .blueprint {
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 46px 46px;
     }
 
-    .section-title {
-      font-size: clamp(1.9rem, 3.8vw, 2.9rem);
-      font-weight: 750;
-      line-height: 1.13;
-      letter-spacing: -0.025em;
-      margin-bottom: 1.25rem;
-    }
+    /* ── type ── */
+    .eyebrow { display:inline-flex; align-items:center; gap:0.65rem; font-family:var(--mono); font-size:0.72rem; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:1.25rem; }
+    .eyebrow::before { content:''; display:block; width:22px; height:1px; background:var(--accent); flex-shrink:0; }
+    .section-title { font-size:clamp(1.9rem,3.8vw,2.9rem); font-weight:750; line-height:1.13; letter-spacing:-0.025em; margin-bottom:1.25rem; }
+    .section-sub { font-size:1rem; color:var(--text-2); line-height:1.75; max-width:520px; }
 
-    .section-sub {
-      font-size: 1rem;
-      color: var(--text-2);
-      line-height: 1.75;
-      max-width: 500px;
-    }
+    /* ── buttons ── */
+    .btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.8rem 1.625rem; font-family:inherit; font-size:0.875rem; font-weight:600; border-radius:var(--r); cursor:pointer; text-decoration:none; transition:0.2s var(--ease); border:none; letter-spacing:0.005em; }
+    .btn:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+    .btn-primary { background:var(--accent); color:#07090F; }
+    .btn-primary:hover { background:#D8B570; transform:translateY(-1px); }
+    .btn-ghost { background:transparent; color:var(--text-2); border:1px solid var(--border); }
+    .btn-ghost:hover { border-color:var(--border-hi); color:var(--text); }
 
-    /* ─── BUTTONS ──────────────────────────────────────────── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.8rem 1.625rem;
-      font-family: inherit;
-      font-size: 0.875rem;
-      font-weight: 600;
-      border-radius: var(--r);
-      cursor: pointer;
-      text-decoration: none;
-      transition: 0.2s var(--ease);
-      border: none;
-      letter-spacing: 0.005em;
-    }
-    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .logo-mark { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; background:var(--accent); color:#07090F; font-family:var(--mono); font-size:0.6rem; font-weight:500; letter-spacing:0.04em; border-radius:5px; flex-shrink:0; }
 
-    .btn-primary { background: var(--accent); color: #07090F; }
-    .btn-primary:hover { background: #D8B570; transform: translateY(-1px); }
+    /* ── nav ── */
+    #nav { position:fixed; top:0; left:0; right:0; z-index:200; padding:1.375rem 0; transition:background 0.45s,padding 0.35s,border-color 0.45s; border-bottom:1px solid transparent; }
+    #nav.scrolled { background:rgba(7,9,15,0.90); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); padding:1rem 0; border-bottom-color:var(--border); }
+    .nav-inner { display:flex; align-items:center; justify-content:space-between; }
+    .nav-logo { display:flex; align-items:center; gap:0.7rem; text-decoration:none; color:var(--text); font-weight:600; font-size:0.9375rem; letter-spacing:-0.01em; }
+    .nav-links { display:flex; align-items:center; gap:2.25rem; }
+    .nav-links a:not(.btn) { color:var(--text-2); font-size:0.875rem; font-weight:500; text-decoration:none; transition:color 0.2s; }
+    .nav-links a:not(.btn):hover { color:var(--text); }
+    .nav-links .btn { padding:0.55rem 1.1rem; font-size:0.825rem; }
+    .nav-burger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:5px; color:var(--text); }
+    .nav-burger span { display:block; width:22px; height:1.5px; background:currentColor; transition:0.3s var(--ease); transform-origin:center; }
+    .nav-burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+    .nav-burger[aria-expanded="true"] span:nth-child(2){transform:translateY(-6.5px) rotate(-45deg);}
+    .nav-drawer { display:none; flex-direction:column; background:var(--bg-2); border-top:1px solid var(--border); }
+    .nav-drawer.open { display:flex; }
+    .nav-drawer a { padding:0.9rem 2rem; color:var(--text); text-decoration:none; font-size:0.9375rem; font-weight:500; border-bottom:1px solid var(--border); transition:color 0.2s; }
+    .nav-drawer a:last-child { border-bottom:none; }
+    .nav-drawer a:hover { color:var(--accent); }
+    @media (max-width:768px){ .nav-links{display:none;} .nav-burger{display:flex;} }
 
-    .btn-ghost {
-      background: transparent;
-      color: var(--text-2);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { border-color: var(--border-hi); color: var(--text); }
-
-    /* ─── LOGO MARK ────────────────────────────────────────── */
-    .logo-mark {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 30px;
-      height: 30px;
-      background: var(--accent);
-      color: #07090F;
-      font-size: 0.62rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      border-radius: 5px;
-      flex-shrink: 0;
-    }
-
-    /* ─── NAV ──────────────────────────────────────────────── */
-    #nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 200;
-      padding: 1.375rem 0;
-      transition: background 0.45s, padding 0.35s, border-color 0.45s;
-      border-bottom: 1px solid transparent;
-    }
-    #nav.scrolled {
-      background: rgba(7,9,15,0.90);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      padding: 1rem 0;
-      border-bottom-color: var(--border);
-    }
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 600;
-      font-size: 0.9375rem;
-      letter-spacing: -0.01em;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2.25rem;
-    }
-    .nav-links a:not(.btn) {
-      color: var(--text-2);
-      font-size: 0.875rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-links a:not(.btn):hover { color: var(--text); }
-    .nav-links .btn { padding: 0.55rem 1.1rem; font-size: 0.825rem; }
-
-    .nav-burger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 5px;
-      color: var(--text);
-    }
-    .nav-burger span {
-      display: block;
-      width: 22px;
-      height: 1.5px;
-      background: currentColor;
-      transition: 0.3s var(--ease);
-      transform-origin: center;
-    }
-    .nav-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-    .nav-burger[aria-expanded="true"] span:nth-child(2) { transform: translateY(-6.5px) rotate(-45deg); }
-
-    .nav-drawer {
-      display: none;
-      flex-direction: column;
-      background: var(--bg-2);
-      border-top: 1px solid var(--border);
-    }
-    .nav-drawer.open { display: flex; }
-    .nav-drawer a {
-      padding: 0.9rem 2rem;
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.9375rem;
-      font-weight: 500;
-      border-bottom: 1px solid var(--border);
-      transition: color 0.2s;
-    }
-    .nav-drawer a:last-child { border-bottom: none; }
-    .nav-drawer a:hover { color: var(--accent); }
-
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .nav-burger { display: flex; }
-    }
-
-    /* ─── HERO ─────────────────────────────────────────────── */
-    #hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-      padding-top: 80px;
-    }
-
-    #canvas-hero {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
-    /* Gradient veil so text stays legible over 3D */
-    .hero-veil {
-      position: absolute;
-      inset: 0;
+    /* ── hero ── */
+    #hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; padding-top:80px; }
+    #canvas-hero { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+    .hero-veil { position:absolute; inset:0; z-index:1; pointer-events:none;
       background:
         linear-gradient(100deg, var(--bg) 36%, transparent 68%),
-        linear-gradient(to bottom, rgba(7,9,15,0.35) 0%, transparent 30%, transparent 70%, var(--bg) 100%);
-      z-index: 1;
-      pointer-events: none;
-    }
+        linear-gradient(to bottom, rgba(7,9,15,0.35) 0%, transparent 30%, transparent 70%, var(--bg) 100%); }
+    .hero-static { display:none; position:absolute; inset:0; background:radial-gradient(ellipse at 75% 40%, #152040 0%, var(--bg) 62%); }
+    .no-3d .hero-static { display:block; }
+    .no-3d #canvas-hero { display:none; }
+    .no-3d .hero-veil { background:linear-gradient(100deg, var(--bg) 45%, transparent 80%); }
+    .hero-content { position:relative; z-index:2; padding:3rem 0 5rem; max-width:600px; }
+    .hero-tag { display:inline-flex; align-items:center; gap:0.6rem; font-family:var(--mono); font-size:0.72rem; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:1.75rem; }
+    .hero-tag::before { content:''; width:22px; height:1px; background:var(--accent); }
+    .hero-h1 { font-size:clamp(3.4rem,7.5vw,5.8rem); font-weight:800; line-height:1.03; letter-spacing:-0.035em; margin-bottom:1.5rem; }
+    .hero-h1 span { color:var(--accent); }
+    .hero-sub { font-size:1.125rem; color:var(--text-2); line-height:1.78; margin-bottom:2.5rem; max-width:470px; }
+    .hero-actions { display:flex; align-items:center; gap:0.875rem; flex-wrap:wrap; }
+    .hero-scroll { position:absolute; bottom:2.25rem; left:50%; transform:translateX(-50%); z-index:2; display:flex; flex-direction:column; align-items:center; gap:0.5rem; }
+    .scroll-bar { width:1px; height:44px; background:linear-gradient(to bottom, var(--text-2), transparent); animation:scrollAnim 2.2s ease-in-out infinite; }
+    @keyframes scrollAnim { 0%,100%{opacity:0.3; transform:scaleY(0.7); transform-origin:top;} 50%{opacity:0.9; transform:scaleY(1); transform-origin:top;} }
 
-    /* Static fallback when 3D is off */
-    .hero-static {
-      display: none;
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 75% 40%, #152040 0%, var(--bg) 62%);
-    }
-    .no-3d .hero-static  { display: block; }
-    .no-3d #canvas-hero  { display: none; }
-    .no-3d .hero-veil    { background: linear-gradient(100deg, var(--bg) 45%, transparent 80%); }
+    /* ── services ── */
+    #services { padding:7rem 0; background:var(--bg-2); }
+    .services-head { display:flex; justify-content:space-between; align-items:flex-end; gap:2rem; margin-bottom:3.5rem; }
+    .services-grid { display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--border); border-radius:calc(var(--r) + 2px); overflow:hidden; perspective:1400px; }
+    .svc-card { position:relative; padding:2.75rem; border-right:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--bg-2); transition:transform 0.2s var(--ease), background 0.35s var(--ease); transform-style:preserve-3d; will-change:transform; }
+    .svc-card::before, .svc-card::after { content:''; position:absolute; width:9px; height:9px; border-color:var(--accent-md); opacity:0; transition:opacity 0.35s; }
+    .svc-card::before { top:14px; left:14px; border-top:1px solid; border-left:1px solid; }
+    .svc-card::after { bottom:14px; right:14px; border-bottom:1px solid; border-right:1px solid; }
+    .svc-card:nth-child(2n){ border-right:none; }
+    .svc-card:nth-last-child(-n+2){ border-bottom:none; }
+    .svc-card:hover { background:var(--bg-3); z-index:5; }
+    .svc-card:hover::before, .svc-card:hover::after { opacity:1; }
+    .svc-n { font-family:var(--mono); font-size:0.72rem; font-weight:500; letter-spacing:0.08em; color:var(--accent); margin-bottom:1.1rem; }
+    .svc-card h3 { font-size:1.175rem; font-weight:700; letter-spacing:-0.02em; margin-bottom:0.75rem; line-height:1.3; }
+    .svc-card p { font-size:0.9375rem; color:var(--text-2); line-height:1.72; margin-bottom:1.25rem; }
+    .svc-deliver { font-family:var(--mono); font-size:0.72rem; letter-spacing:0.04em; color:var(--text); opacity:0.82; margin-bottom:1.25rem; }
+    .svc-deliver span { color:var(--text-2); }
+    .svc-tags { display:flex; flex-wrap:wrap; gap:0.375rem; }
+    .tag { font-size:0.7rem; font-weight:500; letter-spacing:0.03em; padding:0.22rem 0.6rem; border:1px solid var(--border); border-radius:3px; color:var(--text-2); }
+    @media (max-width:768px){ .services-head{flex-direction:column; align-items:flex-start;} .services-grid{grid-template-columns:1fr;} .svc-card{border-right:none; border-bottom:1px solid var(--border);} .svc-card:last-child{border-bottom:none;} }
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      padding: 3rem 0 5rem;
-      max-width: 580px;
-    }
+    /* ── approach ── */
+    #approach { padding:7rem 0; position:relative; overflow:hidden; }
+    .approach-head { margin-bottom:4rem; }
+    .steps-row { display:grid; grid-template-columns:repeat(4,1fr); position:relative; }
+    .steps-row::after { content:''; position:absolute; top:0.4rem; left:0.4rem; width:0; height:1px; background:linear-gradient(90deg,var(--accent),var(--accent-md)); pointer-events:none; transition:width 1.1s var(--ease); }
+    .steps-row.lined::after { width:calc(100% - 0.8rem); }
+    .step { padding:2rem 1.75rem 0 0; }
+    .step-dot { width:0.875rem; height:0.875rem; border:1.5px solid var(--border); border-radius:50%; background:var(--bg); margin-bottom:1.625rem; position:relative; transition:border-color 0.3s,background 0.3s,box-shadow 0.3s; }
+    .step:hover .step-dot { border-color:var(--accent); background:var(--accent-lo); box-shadow:0 0 0 4px var(--accent-lo); }
+    .step-n { font-family:var(--mono); font-size:0.72rem; font-weight:500; letter-spacing:0.08em; color:var(--accent); margin-bottom:0.625rem; }
+    .step h3 { font-size:1.125rem; font-weight:700; letter-spacing:-0.018em; margin-bottom:0.625rem; }
+    .step p { font-size:0.9rem; color:var(--text-2); line-height:1.72; }
+    @media (max-width:900px){ .steps-row{grid-template-columns:1fr 1fr; gap:2.5rem 1.5rem;} .steps-row::after{display:none;} }
+    @media (max-width:540px){ .steps-row{grid-template-columns:1fr;} }
 
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.73rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.75rem;
-    }
-    .hero-tag::before {
-      content: '';
-      width: 20px;
-      height: 1px;
-      background: var(--accent);
-    }
+    /* ── instrument band (2nd 3D moment) ── */
+    #instrument { position:relative; padding:6.5rem 0; overflow:hidden; background:var(--bg); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .instrument-bp { position:absolute; inset:0; opacity:0.8; -webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 75%); mask-image:radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 75%); pointer-events:none; }
+    .instrument-grid { position:relative; display:grid; grid-template-columns:0.9fr 1.1fr; gap:4rem; align-items:center; }
+    .instrument-copy .section-title { margin-bottom:1.25rem; }
+    .instrument-copy p { font-size:1rem; color:var(--text-2); line-height:1.8; max-width:430px; }
+    .instrument-vis { position:relative; }
+    #canvas-level { width:100%; height:360px; display:block; }
+    .instrument-cap { font-family:var(--mono); font-size:0.72rem; letter-spacing:0.06em; color:var(--text-2); margin-top:0.5rem; text-align:center; }
+    .instrument-cap .blink { color:var(--accent); }
+    .instrument-static { display:none; height:360px; border:1px solid var(--border); border-radius:var(--r); background:radial-gradient(ellipse at 50% 50%, var(--bg-3) 0%, var(--bg) 70%); position:relative; }
+    .instrument-static::after { content:''; position:absolute; top:50%; left:10%; right:10%; height:2px; transform:translateY(-50%); background:linear-gradient(90deg, transparent, var(--accent), transparent); }
+    .no-3d .instrument-static { display:block; }
+    .no-3d #canvas-level { display:none; }
+    @media (max-width:820px){ .instrument-grid{grid-template-columns:1fr; gap:2.5rem;} .instrument-copy p{max-width:none;} }
 
-    .hero-h1 {
-      font-size: clamp(3.4rem, 7.5vw, 5.8rem);
-      font-weight: 800;
-      line-height: 1.03;
-      letter-spacing: -0.035em;
-      margin-bottom: 1.5rem;
-    }
-    .hero-h1 span { color: var(--accent); }
+    /* ── proof ── */
+    #proof { padding:5.5rem 0; background:var(--bg-2); }
+    .proof-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; }
+    .proof-cell { background:var(--bg-2); text-align:center; padding:3rem 1.5rem; }
+    .proof-num { font-size:clamp(2.6rem,4.5vw,3.9rem); font-weight:800; letter-spacing:-0.04em; color:var(--accent); line-height:1; margin-bottom:0.5rem; font-variant-numeric:tabular-nums; }
+    .proof-label { font-size:0.825rem; color:var(--text-2); line-height:1.45; max-width:150px; margin:0 auto; }
+    @media (max-width:768px){ .proof-grid{grid-template-columns:1fr 1fr;} }
+    @media (max-width:400px){ .proof-grid{grid-template-columns:1fr;} }
 
-    .hero-sub {
-      font-size: 1.125rem;
-      color: var(--text-2);
-      line-height: 1.78;
-      margin-bottom: 2.5rem;
-      max-width: 440px;
-    }
+    /* ── about ── */
+    #about { padding:7rem 0; }
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:5.5rem; align-items:start; }
+    .about-text .section-title { margin-bottom:1.5rem; }
+    .about-text p { font-size:1rem; color:var(--text-2); line-height:1.82; margin-bottom:1.1rem; }
+    .about-text p:first-of-type { font-size:1.1rem; color:var(--text); }
+    .values { display:flex; flex-direction:column; gap:2.25rem; margin-top:0.5rem; }
+    .value { display:flex; gap:1.125rem; align-items:flex-start; }
+    .value-icon { width:34px; height:34px; flex-shrink:0; border:1px solid var(--accent-md); background:var(--accent-lo); border-radius:5px; display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:0.9rem; line-height:1; }
+    .value h4 { font-size:0.9375rem; font-weight:700; letter-spacing:-0.01em; margin-bottom:0.3rem; }
+    .value p { font-size:0.875rem; color:var(--text-2); line-height:1.65; }
+    @media (max-width:768px){ .about-grid{grid-template-columns:1fr; gap:3.5rem;} }
 
-    .hero-actions { display: flex; align-items: center; gap: 0.875rem; flex-wrap: wrap; }
+    /* ── contact ── */
+    #contact { padding:7rem 0; background:var(--bg-2); }
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:5.5rem; align-items:start; }
+    .contact-left p { font-size:0.9375rem; color:var(--text-2); line-height:1.78; margin-bottom:0.9rem; }
+    .contact-detail { display:flex; align-items:center; gap:0.625rem; font-size:0.875rem; color:var(--text-2); margin-top:1.875rem; }
+    .contact-detail svg { flex-shrink:0; color:var(--accent); }
+    .contact-detail a { color:var(--accent); text-decoration:none; }
+    .contact-detail a:hover { text-decoration:underline; }
+    .form-fields { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .field { display:flex; flex-direction:column; gap:0.4rem; }
+    .field.span2 { grid-column:1/-1; }
+    label { font-family:var(--mono); font-size:0.7rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-2); }
+    input, textarea { width:100%; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:var(--r); padding:0.78rem 1rem; color:var(--text); font-family:inherit; font-size:0.9375rem; outline:none; transition:border-color 0.25s,background 0.25s; resize:vertical; }
+    input::placeholder, textarea::placeholder { color:var(--text-2); }
+    input:focus, textarea:focus { border-color:var(--accent); background:rgba(201,160,92,0.04); }
+    .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+    .form-note { font-size:0.8rem; padding:0.7rem 0.875rem; border-radius:var(--r); margin-top:0.875rem; display:none; }
+    .form-note.ok { display:block; background:rgba(74,200,120,0.08); border:1px solid rgba(74,200,120,0.2); color:#4ac878; }
+    .form-note.err { display:block; background:rgba(220,80,80,0.08); border:1px solid rgba(220,80,80,0.2); color:#e06060; }
+    @media (max-width:768px){ .contact-grid{grid-template-columns:1fr; gap:3rem;} .form-fields{grid-template-columns:1fr;} }
 
-    .hero-scroll {
-      position: absolute;
-      bottom: 2.25rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .scroll-bar {
-      width: 1px;
-      height: 44px;
-      background: linear-gradient(to bottom, var(--text-2), transparent);
-      animation: scrollAnim 2.2s ease-in-out infinite;
-    }
-    @keyframes scrollAnim {
-      0%,100% { opacity: 0.3; transform: scaleY(0.7); transform-origin: top; }
-      50%      { opacity: 0.9; transform: scaleY(1);   transform-origin: top; }
-    }
+    /* ── footer ── */
+    footer { padding:2.25rem 0; border-top:1px solid var(--border); }
+    .footer-inner { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; }
+    .footer-brand { display:flex; align-items:center; gap:0.65rem; font-size:0.875rem; color:var(--text-2); text-decoration:none; }
+    .footer-brand .logo-mark { width:24px; height:24px; font-size:0.54rem; }
+    .footer-nav { display:flex; gap:1.875rem; }
+    .footer-nav a { font-size:0.8125rem; color:var(--text-2); text-decoration:none; transition:color 0.2s; }
+    .footer-nav a:hover { color:var(--text); }
+    .footer-copy { font-size:0.775rem; color:var(--text-2); opacity:0.5; }
+    @media (max-width:640px){ .footer-inner{flex-direction:column; align-items:flex-start; gap:1.25rem;} .footer-copy{order:3;} }
 
-    /* ─── SERVICES ─────────────────────────────────────────── */
-    #services {
-      padding: 7rem 0;
-      background: var(--bg-2);
-    }
-    .services-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 2rem;
-      margin-bottom: 3.5rem;
-    }
-    .services-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1px solid var(--border);
-      border-radius: calc(var(--r) + 2px);
-      overflow: hidden;
-    }
-    .svc-card {
-      padding: 2.75rem;
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-2);
-      transition: background 0.35s var(--ease);
-    }
-    .svc-card:nth-child(2n)  { border-right: none; }
-    .svc-card:nth-last-child(-n+2) { border-bottom: none; }
-    .svc-card:hover { background: var(--bg-3); }
+    /* ── ticker ── */
+    .ticker { position:relative; overflow:hidden; background:var(--bg); border-bottom:1px solid var(--border); padding:0.85rem 0; }
+    .ticker__track { display:inline-flex; white-space:nowrap; will-change:transform; animation:tickerScroll 34s linear infinite; }
+    .ticker:hover .ticker__track { animation-play-state:paused; }
+    .ticker__item { font-family:var(--mono); font-size:0.76rem; letter-spacing:0.13em; text-transform:uppercase; color:var(--text-2); padding:0 1.5rem; }
+    .ticker__item::after { content:'/'; color:var(--accent); opacity:0.55; margin-left:1.5rem; }
+    @keyframes tickerScroll { from{transform:translateX(0);} to{transform:translateX(-50%);} }
 
-    .svc-n {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-      margin-bottom: 1.1rem;
-    }
-    .svc-card h3 {
-      font-size: 1.175rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
-      line-height: 1.3;
-    }
-    .svc-card p {
-      font-size: 0.9375rem;
-      color: var(--text-2);
-      line-height: 1.72;
-      margin-bottom: 1.5rem;
-    }
-    .svc-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
-    .tag {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-      padding: 0.22rem 0.6rem;
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      color: var(--text-2);
-    }
+    /* ── small motion ── */
+    .value-icon { transition:transform 0.45s var(--ease), border-color 0.3s, background 0.3s; }
+    .value:hover .value-icon { transform:rotate(90deg); border-color:var(--accent); background:var(--accent-md); }
+    .proof-cell { transition:background 0.3s, transform 0.3s var(--ease); }
+    .proof-cell:hover { background:var(--bg-3); transform:translateY(-4px); }
+    .btn-primary { will-change:transform; }
 
-    @media (max-width: 768px) {
-      .services-head { flex-direction: column; align-items: flex-start; }
-      .services-grid { grid-template-columns: 1fr; }
-      .svc-card { border-right: none; border-bottom: 1px solid var(--border); }
-      .svc-card:last-child { border-bottom: none; }
-    }
-
-    /* ─── APPROACH ─────────────────────────────────────────── */
-    #approach { padding: 7rem 0; }
-
-    .approach-head { margin-bottom: 4rem; }
-
-    .steps-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      position: relative;
-    }
-    .steps-row::after {
-      content: '';
-      position: absolute;
-      top: 0.4rem;
-      left: 0.4rem;
-      right: 0.4rem;
-      height: 1px;
-      background: var(--border);
-      pointer-events: none;
-    }
-
-    .step { padding: 2rem 1.75rem 0 0; }
-    .step-dot {
-      width: 0.875rem;
-      height: 0.875rem;
-      border: 1.5px solid var(--border);
-      border-radius: 50%;
-      background: var(--bg);
-      margin-bottom: 1.625rem;
-      position: relative;
-      transition: border-color 0.3s, background 0.3s;
-    }
-    .step:hover .step-dot { border-color: var(--accent); background: var(--accent-lo); }
-    .step-n {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-      margin-bottom: 0.625rem;
-    }
-    .step h3 {
-      font-size: 1.125rem;
-      font-weight: 700;
-      letter-spacing: -0.018em;
-      margin-bottom: 0.625rem;
-    }
-    .step p { font-size: 0.9rem; color: var(--text-2); line-height: 1.72; }
-
-    @media (max-width: 900px) {
-      .steps-row { grid-template-columns: 1fr 1fr; gap: 2.5rem 1.5rem; }
-      .steps-row::after { display: none; }
-    }
-    @media (max-width: 540px) {
-      .steps-row { grid-template-columns: 1fr; }
-    }
-
-    /* ─── PROOF ────────────────────────────────────────────── */
-    #proof {
-      padding: 5.5rem 0;
-      background: var(--bg-2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .proof-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      overflow: hidden;
-    }
-    .proof-cell {
-      background: var(--bg-2);
-      text-align: center;
-      padding: 3rem 1.5rem;
-    }
-    .proof-num {
-      font-size: clamp(2.6rem, 4.5vw, 3.9rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-      font-variant-numeric: tabular-nums;
-    }
-    .proof-label {
-      font-size: 0.825rem;
-      color: var(--text-2);
-      line-height: 1.45;
-      max-width: 120px;
-      margin: 0 auto;
-    }
-
-    @media (max-width: 768px) {
-      .proof-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 400px) {
-      .proof-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ─── ABOUT ────────────────────────────────────────────── */
-    #about { padding: 7rem 0; }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5.5rem;
-      align-items: start;
-    }
-    .about-text .section-title { margin-bottom: 1.5rem; }
-    .about-text p {
-      font-size: 1rem;
-      color: var(--text-2);
-      line-height: 1.82;
-      margin-bottom: 1.1rem;
-    }
-    .about-text p:first-of-type { font-size: 1.1rem; color: var(--text); }
-
-    .values { display: flex; flex-direction: column; gap: 2.25rem; margin-top: 0.5rem; }
-    .value {
-      display: flex;
-      gap: 1.125rem;
-      align-items: flex-start;
-    }
-    .value-icon {
-      width: 34px;
-      height: 34px;
-      flex-shrink: 0;
-      border: 1px solid var(--accent-md);
-      background: var(--accent-lo);
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent);
-      font-size: 0.9rem;
-      line-height: 1;
-    }
-    .value h4 {
-      font-size: 0.9375rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.3rem;
-    }
-    .value p { font-size: 0.875rem; color: var(--text-2); line-height: 1.65; }
-
-    @media (max-width: 768px) {
-      .about-grid { grid-template-columns: 1fr; gap: 3.5rem; }
-    }
-
-    /* ─── CONTACT ──────────────────────────────────────────── */
-    #contact {
-      padding: 7rem 0;
-      background: var(--bg-2);
-    }
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5.5rem;
-      align-items: start;
-    }
-    .contact-left p {
-      font-size: 0.9375rem;
-      color: var(--text-2);
-      line-height: 1.78;
-      margin-bottom: 0.9rem;
-    }
-    .contact-detail {
-      display: flex;
-      align-items: center;
-      gap: 0.625rem;
-      font-size: 0.875rem;
-      color: var(--text-2);
-      margin-top: 1.875rem;
-    }
-    .contact-detail svg { flex-shrink: 0; color: var(--accent); }
-    .contact-detail a { color: var(--accent); text-decoration: none; }
-    .contact-detail a:hover { text-decoration: underline; }
-
-    /* Form */
-    .form-fields {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-    .field { display: flex; flex-direction: column; gap: 0.4rem; }
-    .field.span2 { grid-column: 1/-1; }
-
-    label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-2);
-    }
-
-    input, textarea {
-      width: 100%;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 0.78rem 1rem;
-      color: var(--text);
-      font-family: inherit;
-      font-size: 0.9375rem;
-      outline: none;
-      transition: border-color 0.25s, background 0.25s;
-      resize: vertical;
-    }
-    input::placeholder, textarea::placeholder { color: var(--text-2); }
-    input:focus, textarea:focus {
-      border-color: var(--accent);
-      background: rgba(201,160,92,0.04);
-    }
-
-    .form-note {
-      font-size: 0.8rem;
-      padding: 0.7rem 0.875rem;
-      border-radius: var(--r);
-      margin-top: 0.875rem;
-      display: none;
-    }
-    .form-note.ok  { display: block; background: rgba(74,200,120,0.08); border: 1px solid rgba(74,200,120,0.2); color: #4ac878; }
-    .form-note.err { display: block; background: rgba(220,80,80,0.08);  border: 1px solid rgba(220,80,80,0.2);  color: #e06060; }
-
-    @media (max-width: 768px) {
-      .contact-grid  { grid-template-columns: 1fr; gap: 3rem; }
-      .form-fields   { grid-template-columns: 1fr; }
-    }
-
-    /* ─── FOOTER ───────────────────────────────────────────── */
-    footer {
-      padding: 2.25rem 0;
-      border-top: 1px solid var(--border);
-    }
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      font-size: 0.875rem;
-      color: var(--text-2);
-      text-decoration: none;
-    }
-    .footer-brand .logo-mark { width: 24px; height: 24px; font-size: 0.56rem; }
-    .footer-nav { display: flex; gap: 1.875rem; }
-    .footer-nav a {
-      font-size: 0.8125rem;
-      color: var(--text-2);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-nav a:hover { color: var(--text); }
-    .footer-copy { font-size: 0.775rem; color: var(--text-2); opacity: 0.5; }
-
-    @media (max-width: 640px) {
-      .footer-inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
-      .footer-copy  { order: 3; }
-    }
-
-    /* ─── INITIAL ANIMATION STATES ─────────────────────────── */
-    .reveal       { opacity: 0; transform: translateY(24px); }
-    .reveal-scale { opacity: 0; transform: scale(0.95); }
-
-    /* Honor prefers-reduced-motion immediately (before JS) */
-    @media (prefers-reduced-motion: reduce) {
-      .reveal, .reveal-scale { opacity: 1; transform: none; }
-      .scroll-bar { animation: none; }
+    /* ── initial anim states ── */
+    .reveal { opacity:0; transform:translateY(24px); }
+    .reveal-scale { opacity:0; transform:scale(0.95); }
+    @media (prefers-reduced-motion:reduce){
+      .reveal,.reveal-scale{opacity:1; transform:none;}
+      .scroll-bar{animation:none;}
+      .ticker__track{animation:none;}
+      .steps-row::after{transition:none; width:calc(100% - 0.8rem);}
     }
   </style>
 </head>
 <body>
 
-  <!-- ─────────────────────── NAV ─────────────────────────── -->
+  <div class="level-progress" aria-hidden="true">
+    <div class="level-progress__fill" id="lp-fill"></div>
+    <div class="level-progress__bubble" id="lp-bubble"></div>
+  </div>
+
+  <!-- NAV -->
   <nav id="nav" role="navigation" aria-label="Main">
     <div class="container">
       <div class="nav-inner">
@@ -689,285 +261,223 @@
           Level Set Advisory
         </a>
         <div class="nav-links" role="list">
-          <a href="#services" role="listitem">Services</a>
-          <a href="#approach" role="listitem">Approach</a>
-          <a href="#about"    role="listitem">About</a>
-          <a href="#contact"  class="btn btn-primary" role="listitem">Talk to us</a>
+          <a href="#services" role="listitem">Capabilities</a>
+          <a href="#instrument" role="listitem">Method</a>
+          <a href="#about" role="listitem">About</a>
+          <a href="#contact" class="btn btn-primary" role="listitem">Start a project</a>
         </div>
-        <button class="nav-burger" id="nav-burger"
-          aria-label="Toggle navigation"
-          aria-expanded="false"
-          aria-controls="nav-drawer">
+        <button class="nav-burger" id="nav-burger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-drawer">
           <span></span><span></span>
         </button>
       </div>
     </div>
     <div class="nav-drawer" id="nav-drawer" role="menu" aria-label="Mobile navigation">
-      <a href="#services" role="menuitem">Services</a>
-      <a href="#approach" role="menuitem">Approach</a>
-      <a href="#about"    role="menuitem">About</a>
-      <a href="#contact"  role="menuitem">Talk to us</a>
+      <a href="#services" role="menuitem">Capabilities</a>
+      <a href="#instrument" role="menuitem">Method</a>
+      <a href="#about" role="menuitem">About</a>
+      <a href="#contact" role="menuitem">Start a project</a>
     </div>
   </nav>
 
-  <!-- ─────────────────────── HERO ─────────────────────────── -->
+  <!-- HERO -->
   <section id="hero" aria-label="Introduction">
     <canvas id="canvas-hero" aria-hidden="true"></canvas>
-    <div class="hero-veil"   aria-hidden="true"></div>
+    <div class="hero-veil" aria-hidden="true"></div>
     <div class="hero-static" aria-hidden="true"></div>
     <div class="container">
       <div class="hero-content">
-        <div class="hero-tag reveal">Strategy &amp; Operations Advisory</div>
-        <h1 class="hero-h1 reveal">
-          Level Set<br>
-          <span>Advisory.</span>
-        </h1>
+        <div class="hero-tag reveal" data-parallax="0.15">Operations &amp; Strategy Projects</div>
+        <h1 class="hero-h1 reveal">Level Set<br><span>Advisory.</span></h1>
         <p class="hero-sub reveal">
-          We help leadership teams establish a clear baseline —
-          then move with precision.
+          Engineering-grade operations and strategy projects, scoped to ship
+          in two to four weeks. A clear baseline, hard numbers, and work you
+          can act on the moment it lands.
         </p>
         <div class="hero-actions reveal">
           <a href="#contact" class="btn btn-primary">
-            Start a conversation
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            Start a project
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="#services" class="btn btn-ghost">See our work</a>
+          <a href="#services" class="btn btn-ghost">See capabilities</a>
         </div>
       </div>
     </div>
-    <div class="hero-scroll" aria-hidden="true">
-      <div class="scroll-bar"></div>
-    </div>
+    <div class="hero-scroll" aria-hidden="true"><div class="scroll-bar"></div></div>
   </section>
 
-  <!-- ─────────────────────── SERVICES ─────────────────────── -->
+  <!-- TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <span class="ticker__item">Baseline first</span><span class="ticker__item">Cycle-time &minus;6%</span><span class="ticker__item">3-statement models</span><span class="ticker__item">SOP design</span><span class="ticker__item">Market sizing</span><span class="ticker__item">250+ out-pitched</span><span class="ticker__item">Tableau &amp; Power BI</span><span class="ticker__item">Scoped in weeks</span><span class="ticker__item">Numbers over narrative</span><span class="ticker__item">Baseline first</span><span class="ticker__item">Cycle-time &minus;6%</span><span class="ticker__item">3-statement models</span><span class="ticker__item">SOP design</span><span class="ticker__item">Market sizing</span><span class="ticker__item">250+ out-pitched</span><span class="ticker__item">Tableau &amp; Power BI</span><span class="ticker__item">Scoped in weeks</span><span class="ticker__item">Numbers over narrative</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
   <section id="services" aria-labelledby="svc-title">
     <div class="container">
       <div class="services-head">
         <div>
-          <div class="eyebrow reveal">What We Do</div>
-          <h2 class="section-title reveal" id="svc-title">
-            Precise work.<br>Clear outcomes.
-          </h2>
+          <div class="eyebrow reveal" data-parallax="0.1">Capabilities</div>
+          <h2 class="section-title reveal" id="svc-title">Four kinds of work.<br>One standard of rigor.</h2>
         </div>
         <p class="section-sub reveal">
-          Four capabilities, applied where misalignment is costing you the most.
+          Each engagement is fixed in scope and built to ship in weeks, not
+          quarters. You get the model, the analysis, and the documentation —
+          not a deck that needs another vendor to act on.
         </p>
       </div>
 
-      <div class="services-grid">
+      <div class="services-grid" id="svc-grid">
         <article class="svc-card reveal">
           <div class="svc-n">01</div>
-          <h3>Strategy Alignment</h3>
-          <p>Clarify the mission, surface competing priorities, and get leadership on the same page before another quarter passes misaligned.</p>
-          <div class="svc-tags">
-            <span class="tag">Strategic planning</span>
-            <span class="tag">Facilitation</span>
-            <span class="tag">OKRs &amp; goals</span>
-          </div>
+          <h3>Operations &amp; Process</h3>
+          <p>Map the process, find the constraint that's actually costing you time, and rebuild it with SOPs and stage-gates a team can run without me in the room.</p>
+          <div class="svc-deliver"><span>Ship:</span> Process map, SOPs, stage-gate checklists</div>
+          <div class="svc-tags"><span class="tag">Process mapping</span><span class="tag">SOP design</span><span class="tag">Cycle-time</span></div>
         </article>
-
         <article class="svc-card reveal">
           <div class="svc-n">02</div>
-          <h3>Operating Model Design</h3>
-          <p>Build the structures, accountabilities, and decision rights that match your strategy — not the org chart you inherited.</p>
-          <div class="svc-tags">
-            <span class="tag">Org design</span>
-            <span class="tag">Governance</span>
-            <span class="tag">Operating cadences</span>
-          </div>
+          <h3>Financial &amp; Operating Models</h3>
+          <p>Build the model the decision actually rests on — integrated three-statement, unit economics, or scenario analysis — tied out and stress-tested so the numbers hold up in the room.</p>
+          <div class="svc-deliver"><span>Ship:</span> Working model, assumptions doc, scenarios</div>
+          <div class="svc-tags"><span class="tag">3-statement models</span><span class="tag">Unit economics</span><span class="tag">Scenario analysis</span></div>
         </article>
-
         <article class="svc-card reveal">
           <div class="svc-n">03</div>
-          <h3>Growth &amp; Go-to-Market</h3>
-          <p>Define where you play, how you win, and the precise motions that capture the value your strategy promises.</p>
-          <div class="svc-tags">
-            <span class="tag">Market positioning</span>
-            <span class="tag">GTM planning</span>
-            <span class="tag">Revenue ops</span>
-          </div>
+          <h3>Market &amp; Competitive Analysis</h3>
+          <p>Size the market, benchmark the field, and pressure-test where you actually win — the analysis behind a go-to-market call or a strategic bet, not a literature review.</p>
+          <div class="svc-deliver"><span>Ship:</span> Sizing, competitor matrix, GTM read</div>
+          <div class="svc-tags"><span class="tag">Market sizing</span><span class="tag">Competitor benchmarking</span><span class="tag">Go-to-market</span></div>
         </article>
-
         <article class="svc-card reveal">
           <div class="svc-n">04</div>
-          <h3>Transformation Execution</h3>
-          <p>Translate strategy into a sequenced roadmap, manage the dependencies, and keep teams moving through uncertainty.</p>
-          <div class="svc-tags">
-            <span class="tag">Change management</span>
-            <span class="tag">Program execution</span>
-            <span class="tag">Stakeholder comms</span>
-          </div>
+          <h3>Data &amp; Decision Dashboards</h3>
+          <p>Turn the messy spreadsheet into something you trust — cleaned data, the KPIs that matter, and a dashboard in Tableau or Power BI that updates instead of rotting.</p>
+          <div class="svc-deliver"><span>Ship:</span> Clean dataset, live dashboard, KPI doc</div>
+          <div class="svc-tags"><span class="tag">Python &amp; SQL</span><span class="tag">Tableau / Power BI</span><span class="tag">KPI tracking</span></div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ─────────────────────── APPROACH ─────────────────────── -->
+  <!-- APPROACH -->
   <section id="approach" aria-labelledby="approach-title">
     <div class="container">
       <div class="approach-head">
-        <div class="eyebrow reveal">How We Work</div>
-        <h2 class="section-title reveal" id="approach-title">
-          A disciplined path<br>from fog to forward.
-        </h2>
+        <div class="eyebrow reveal" data-parallax="0.1">How it works</div>
+        <h2 class="section-title reveal" id="approach-title">A scoped path<br>from messy to shipped.</h2>
       </div>
+      <div class="steps-row" id="steps-row">
+        <div class="step reveal"><div class="step-dot" aria-hidden="true"></div><div class="step-n">01</div><h3>Scope</h3><p>We define the one problem worth solving, the deliverable, and a fixed fee. No open-ended retainer, no scope creep.</p></div>
+        <div class="step reveal"><div class="step-dot" aria-hidden="true"></div><div class="step-n">02</div><h3>Baseline</h3><p>I establish where things actually stand today — the numbers, the process, the constraint — so we're measuring against something real.</p></div>
+        <div class="step reveal"><div class="step-dot" aria-hidden="true"></div><div class="step-n">03</div><h3>Build</h3><p>The model, analysis, or system gets built and tied out. You see it in progress, not just at the end.</p></div>
+        <div class="step reveal"><div class="step-dot" aria-hidden="true"></div><div class="step-n">04</div><h3>Handoff</h3><p>You get the working files and the documentation to run it yourself — plus a clear before/after on what moved.</p></div>
+      </div>
+    </div>
+  </section>
 
-      <div class="steps-row">
-        <div class="step reveal">
-          <div class="step-dot" aria-hidden="true"></div>
-          <div class="step-n">01</div>
-          <h3>Diagnose</h3>
-          <p>Understand where misalignment lives, what decisions are stuck, and what it's actually costing the organization.</p>
+  <!-- INSTRUMENT BAND (2nd 3D moment) -->
+  <section id="instrument" aria-labelledby="instrument-title">
+    <div class="instrument-bp blueprint" aria-hidden="true"></div>
+    <div class="container">
+      <div class="instrument-grid">
+        <div class="instrument-copy">
+          <div class="eyebrow reveal" data-parallax="0.1">The method</div>
+          <h2 class="section-title reveal" id="instrument-title">Find level first.<br>Then build.</h2>
+          <p class="reveal">
+            Every engagement starts the same way: establish the true baseline, the
+            datum everything else is measured against. Get that right and the bubble
+            settles, the recommendation holds, and the numbers stop drifting. That's
+            the whole idea behind the name.
+          </p>
         </div>
-        <div class="step reveal">
-          <div class="step-dot" aria-hidden="true"></div>
-          <div class="step-n">02</div>
-          <h3>Align</h3>
-          <p>Build shared perspective across leadership on priorities, constraints, and the choices that have to be made.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-dot" aria-hidden="true"></div>
-          <div class="step-n">03</div>
-          <h3>Execute</h3>
-          <p>Move with precision — sequencing decisions, clearing dependencies, and maintaining momentum through complexity.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-dot" aria-hidden="true"></div>
-          <div class="step-n">04</div>
-          <h3>Sustain</h3>
-          <p>Embed the operating rhythm that keeps alignment durable well after the engagement ends.</p>
+        <div class="instrument-vis">
+          <canvas id="canvas-level" aria-hidden="true"></canvas>
+          <div class="instrument-static" aria-hidden="true"></div>
+          <div class="instrument-cap" aria-hidden="true">// calibrating to datum <span class="blink">●</span></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─────────────────────── PROOF ────────────────────────── -->
-  <section id="proof" aria-label="Results">
+  <!-- PROOF -->
+  <section id="proof" aria-label="At a glance">
     <div class="container">
       <div class="proof-grid">
-        <div class="proof-cell reveal-scale">
-          <div class="proof-num" data-target="47">0</div>
-          <div class="proof-label">Engagements delivered</div>
-        </div>
-        <div class="proof-cell reveal-scale">
-          <div class="proof-num" data-target="2.4" data-suffix="×">0</div>
-          <div class="proof-label">Faster decision cycles</div>
-        </div>
-        <div class="proof-cell reveal-scale">
-          <div class="proof-num" data-target="12">0</div>
-          <div class="proof-label">Industries served</div>
-        </div>
-        <div class="proof-cell reveal-scale">
-          <div class="proof-num" data-target="94" data-suffix="%">0</div>
-          <div class="proof-label">Client return rate</div>
-        </div>
+        <div class="proof-cell reveal-scale"><div class="proof-num" data-static="2–4">2–4</div><div class="proof-label">Weeks per engagement</div></div>
+        <div class="proof-cell reveal-scale"><div class="proof-num" data-target="6" data-suffix="%">0</div><div class="proof-label">Cycle-time reduction delivered on stage-gate work</div></div>
+        <div class="proof-cell reveal-scale"><div class="proof-num" data-target="250" data-suffix="+">0</div><div class="proof-label">Competitors out-pitched for a 1st-place finish</div></div>
+        <div class="proof-cell reveal-scale"><div class="proof-num" data-static="Fixed">Fixed</div><div class="proof-label">Scope and fee, agreed up front</div></div>
       </div>
     </div>
   </section>
 
-  <!-- ─────────────────────── ABOUT ────────────────────────── -->
+  <!-- ABOUT -->
   <section id="about" aria-labelledby="about-title">
     <div class="container">
       <div class="about-grid">
         <div class="about-text">
-          <div class="eyebrow reveal">The Firm</div>
-          <h2 class="section-title reveal" id="about-title">
-            Engineering rigor,<br>applied to strategy.
-          </h2>
-          <p class="reveal">
-            Level Set Advisory was founded on a simple conviction: most strategic failures
-            aren't strategy problems — they're alignment problems. Leadership moves forward
-            without a shared baseline, and the gap between intent and execution widens quietly.
-          </p>
-          <p class="reveal">
-            We bring the same discipline engineers apply to complex systems — mapping the
-            problem precisely, isolating the root constraint, building the fix that holds —
-            to the organizations, decisions, and teams that need to move.
-          </p>
+          <div class="eyebrow reveal" data-parallax="0.1">The practice</div>
+          <h2 class="section-title reveal" id="about-title">Engineering rigor,<br>pointed at your numbers.</h2>
+          <p class="reveal">Level Set Advisory runs on one idea: most teams don't have a strategy problem, they have a baseline problem. They're moving fast on numbers nobody fully trusts, and the gap between the plan and the reality widens quietly.</p>
+          <p class="reveal">I'm a mechanical engineer who works in the operations and strategy lane. That means I treat a business problem the way I'd treat a system — map it, isolate the constraint that actually moves the outcome, and build a fix that holds. Scoped tight, delivered in weeks, measured before and after.</p>
+          <p class="reveal">The background is real work: integrated financial models across multi-entity structures, stage-gate process design that cut a development cycle, and market modeling for a healthcare imaging portfolio. The throughline is the same — numbers over narrative.</p>
         </div>
-
-        <ul class="values" aria-label="Core values">
-          <li class="value reveal">
-            <div class="value-icon" aria-hidden="true">◈</div>
-            <div>
-              <h4>Precision over speed</h4>
-              <p>We slow down to find the right problem before we move fast on the wrong one.</p>
-            </div>
-          </li>
-          <li class="value reveal">
-            <div class="value-icon" aria-hidden="true">⊹</div>
-            <div>
-              <h4>Alignment over consensus</h4>
-              <p>We aim for shared understanding of trade-offs — not forced agreement. Clarity is more durable than harmony.</p>
-            </div>
-          </li>
-          <li class="value reveal">
-            <div class="value-icon" aria-hidden="true">→</div>
-            <div>
-              <h4>Outcomes over outputs</h4>
-              <p>Decks and frameworks are means to an end. The end is an organization that moves with intention.</p>
-            </div>
-          </li>
+        <ul class="values" aria-label="How I work">
+          <li class="value reveal"><div class="value-icon" aria-hidden="true">◈</div><div><h4>Numbers over narrative</h4><p>The recommendation rests on the model, not on the confidence of the person presenting it.</p></div></li>
+          <li class="value reveal"><div class="value-icon" aria-hidden="true">⊹</div><div><h4>Scoped and shipped</h4><p>Fixed scope, a clear deliverable, and a hard timeline. Done in weeks, with files you own.</p></div></li>
+          <li class="value reveal"><div class="value-icon" aria-hidden="true">→</div><div><h4>Rigor over polish</h4><p>A model that ties out beats a deck that looks finished. The work has to survive being acted on.</p></div></li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- ─────────────────────── CONTACT ──────────────────────── -->
+  <!-- CONTACT -->
   <section id="contact" aria-labelledby="contact-title">
     <div class="container">
       <div class="contact-grid">
         <div class="contact-left">
-          <div class="eyebrow reveal">Get in Touch</div>
-          <h2 class="section-title reveal" id="contact-title">
-            Ready to establish<br>your baseline?
-          </h2>
-          <p class="reveal">
-            No pitch deck, no trial engagement. Tell us where the fog is thickest
-            — we'll tell you honestly whether and how we can help.
-          </p>
+          <div class="eyebrow reveal" data-parallax="0.1">Start a project</div>
+          <h2 class="section-title reveal" id="contact-title">Tell me where the<br>numbers stop making sense.</h2>
+          <p class="reveal">No pitch, no trial run. Describe the decision, model, or process that's costing you the most, and I'll tell you honestly whether it's a fit and what a scoped engagement would look like.</p>
           <p class="reveal">Responses typically within one business day.</p>
           <div class="contact-detail reveal">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-              <rect x="2" y="4" width="20" height="16" rx="2"/>
-              <path d="m2 7 10 7 10-7"/>
-            </svg>
-            <a href="mailto:hello@levelsetadvisory.com">hello@levelsetadvisory.com</a>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+            <a href="mailto:ziahl1212@gmail.com">ziahl1212@gmail.com</a>
           </div>
         </div>
 
-        <form id="contact-form" novalidate aria-label="Contact form" class="reveal">
+        <form id="contact-form" action="https://formsubmit.co/ziahl1212@gmail.com" method="POST" novalidate aria-label="Contact form" class="reveal">
+          <!-- FormSubmit config -->
+          <input type="hidden" name="_subject" value="New inquiry — Level Set Advisory">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://ziah-lin.github.io/LevelSetAdvisory/">
+          <!-- honeypot -->
+          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
           <div class="form-fields">
             <div class="field">
               <label for="f-name">Name <span aria-hidden="true">*</span></label>
-              <input type="text" id="f-name" name="name" required
-                placeholder="Alex Chen" autocomplete="name">
+              <input type="text" id="f-name" name="name" required placeholder="Alex Chen" autocomplete="name">
             </div>
             <div class="field">
               <label for="f-org">Organization</label>
-              <input type="text" id="f-org" name="organization"
-                placeholder="Acme Corp" autocomplete="organization">
+              <input type="text" id="f-org" name="organization" placeholder="Acme Corp" autocomplete="organization">
             </div>
             <div class="field span2">
               <label for="f-email">Email <span aria-hidden="true">*</span></label>
-              <input type="email" id="f-email" name="email" required
-                placeholder="alex@acme.com" autocomplete="email">
+              <input type="email" id="f-email" name="email" required placeholder="alex@acme.com" autocomplete="email">
             </div>
             <div class="field span2">
-              <label for="f-msg">What's the challenge? <span aria-hidden="true">*</span></label>
-              <textarea id="f-msg" name="message" rows="5" required
-                placeholder="Describe the decision, misalignment, or strategic problem costing your team the most…"></textarea>
+              <label for="f-msg">What's the problem? <span aria-hidden="true">*</span></label>
+              <textarea id="f-msg" name="message" rows="5" required placeholder="Describe the decision, model, or process costing your team the most…"></textarea>
             </div>
           </div>
           <div style="margin-top:1.125rem">
             <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
               Send message
-              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
           </div>
           <div class="form-note" id="form-note" role="alert" aria-live="polite"></div>
@@ -976,7 +486,7 @@
     </div>
   </section>
 
-  <!-- ─────────────────────── FOOTER ───────────────────────── -->
+  <!-- FOOTER -->
   <footer role="contentinfo">
     <div class="container">
       <div class="footer-inner">
@@ -985,308 +495,371 @@
           Level Set Advisory
         </a>
         <nav class="footer-nav" aria-label="Footer">
-          <a href="#services">Services</a>
-          <a href="#approach">Approach</a>
+          <a href="#services">Capabilities</a>
+          <a href="#instrument">Method</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
         </nav>
-        <p class="footer-copy">
-          &copy; <span id="yr"></span> Level Set Advisory
-        </p>
+        <p class="footer-copy">&copy; <span id="yr"></span> Level Set Advisory</p>
       </div>
     </div>
   </footer>
 
-  <!-- ─── CDN scripts (global, run before module) ─────────── -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 
-  <!-- ─── Main module ──────────────────────────────────────── -->
   <script type="module">
     import * as THREE from 'three';
 
-    /* ── grab globals set by CDN scripts ─────────────────────── */
     const { gsap, ScrollTrigger, Lenis } = window;
     gsap.registerPlugin(ScrollTrigger);
 
-    /* ── misc utils ──────────────────────────────────────────── */
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const mobile  = () => window.innerWidth < 768;
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    const mobile = () => window.innerWidth < 768;
 
     document.getElementById('yr').textContent = new Date().getFullYear();
 
-    /* ══════════════════════════════════════════════════════════
-       LENIS — smooth scroll
-    ══════════════════════════════════════════════════════════ */
+    /* shared mouse + scroll velocity */
+    let mx = 0, my = 0, scrollVel = 0;
+    window.addEventListener('mousemove', e => {
+      mx = (e.clientX / innerWidth - 0.5) * 2;
+      my = (e.clientY / innerHeight - 0.5) * 2;
+    });
+
+    /* ── LENIS ── */
+    const lpFill = document.getElementById('lp-fill');
+    const lpBubble = document.getElementById('lp-bubble');
+    const setProgress = p => { p = Math.max(0, Math.min(1, p)); lpFill.style.transform = `scaleX(${p})`; lpBubble.style.left = (p*100) + '%'; };
+
     let lenis;
     if (!reduced) {
-      lenis = new Lenis({
-        duration: 1.15,
-        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lenis = new Lenis({ duration: 1.25, easing: t => Math.min(1, 1.001 - Math.pow(2, -10*t)), smoothWheel: true });
+      lenis.on('scroll', e => {
+        ScrollTrigger.update();
+        if (typeof e.progress === 'number') setProgress(e.progress);
+        if (typeof e.velocity === 'number') scrollVel = e.velocity;
       });
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add(t => lenis.raf(t * 1000));
+      gsap.ticker.add(t => lenis.raf(t*1000));
       gsap.ticker.lagSmoothing(0);
+    } else {
+      const onProg = () => { const h = document.documentElement; setProgress(h.scrollTop / (h.scrollHeight - h.clientHeight || 1)); };
+      window.addEventListener('scroll', onProg, { passive:true }); onProg();
     }
 
-    /* smooth-scroll anchor links */
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
         const id = a.getAttribute('href').slice(1);
         const el = document.getElementById(id);
         if (!el) return;
         e.preventDefault();
-        if (lenis) lenis.scrollTo(el, { offset: -76 });
-        else el.scrollIntoView({ behavior: 'smooth' });
-        /* close mobile drawer */
-        drawer.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
+        if (lenis) lenis.scrollTo(el, { offset:-76 }); else el.scrollIntoView({ behavior:'smooth' });
+        drawer.classList.remove('open'); burger.setAttribute('aria-expanded','false');
       });
     });
 
-    /* ══════════════════════════════════════════════════════════
-       NAV — scroll class + burger
-    ══════════════════════════════════════════════════════════ */
-    const nav    = document.getElementById('nav');
+    /* ── NAV ── */
+    const nav = document.getElementById('nav');
     const burger = document.getElementById('nav-burger');
     const drawer = document.getElementById('nav-drawer');
-
     const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 55);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    window.addEventListener('scroll', onScroll, { passive:true }); onScroll();
+    burger.addEventListener('click', () => { const open = drawer.classList.toggle('open'); burger.setAttribute('aria-expanded', String(open)); });
 
-    burger.addEventListener('click', () => {
-      const open = drawer.classList.toggle('open');
-      burger.setAttribute('aria-expanded', String(open));
-    });
-
-    /* ══════════════════════════════════════════════════════════
-       THREE.JS HERO SCENE
-    ══════════════════════════════════════════════════════════ */
-    const canvas = document.getElementById('canvas-hero');
-    const heroEl = document.getElementById('hero');
-
-    function initScene() {
-      /* renderer */
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    /* ═══════════ HERO 3D — calibration lattice that levels itself ═══════════ */
+    function initHero() {
+      const canvas = document.getElementById('canvas-hero');
+      const heroEl = document.getElementById('hero');
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
       renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
       renderer.setClearColor(0x000000, 0);
 
-      /* scene + camera */
-      const scene  = new THREE.Scene();
+      const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 100);
-      camera.position.set(0, 0, 5.8);
+      camera.position.set(0, 0, 6.0);
 
-      /* ── geometry ────────────────────────────────────────── */
+      const group = new THREE.Group(); group.position.x = 1.25; scene.add(group);
 
-      /* inner icosahedron — gold wireframe */
-      const geoA  = new THREE.IcosahedronGeometry(1.65, 1);
-      const wgeoA = new THREE.WireframeGeometry(geoA);
-      const matA  = new THREE.LineBasicMaterial({ color: 0xC9A05C, transparent: true, opacity: 0.75 });
-      const icoA  = new THREE.LineSegments(wgeoA, matA);
+      const icoA = new THREE.LineSegments(
+        new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.55, 1)),
+        new THREE.LineBasicMaterial({ color:0xC9A05C, transparent:true, opacity:0.78 }));
+      group.add(icoA);
+      const icoB = new THREE.LineSegments(
+        new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(2.6, 1)),
+        new THREE.LineBasicMaterial({ color:0x3A5E9C, transparent:true, opacity:0.16 }));
+      group.add(icoB);
 
-      /* outer icosahedron — cooler, faint */
-      const geoB  = new THREE.IcosahedronGeometry(2.65, 1);
-      const wgeoB = new THREE.WireframeGeometry(geoB);
-      const matB  = new THREE.LineBasicMaterial({ color: 0x3A5E9C, transparent: true, opacity: 0.16 });
-      const icoB  = new THREE.LineSegments(wgeoB, matB);
+      /* BOLD BACKDROP — a topographic datum field that waves, then settles flat */
+      const fieldGeo = new THREE.PlaneGeometry(34, 20, 48, 28);
+      const fieldBase = fieldGeo.attributes.position.array.slice();
+      const field = new THREE.Mesh(fieldGeo,
+        new THREE.MeshBasicMaterial({ color:0x35508F, wireframe:true, transparent:true, opacity:0 }));
+      field.rotation.x = -Math.PI/2.5; field.position.set(-1.2, -1.6, -6);
+      scene.add(field);
 
-      /* particle field */
-      const ptPos = new Float32Array(120 * 3);
-      for (let i = 0; i < 120 * 3; i += 3) {
-        ptPos[i]   = (Math.random() - 0.5) * 11;
-        ptPos[i+1] = (Math.random() - 0.5) * 11;
-        ptPos[i+2] = (Math.random() - 0.5) *  5 - 1;
+      const N = 70;
+      const base = new Float32Array(N*3), cur = new Float32Array(N*3);
+      for (let i=0;i<N;i++){
+        base[i*3]=(Math.random()-0.5)*9; base[i*3+1]=(Math.random()-0.5)*8; base[i*3+2]=(Math.random()-0.5)*4-0.5;
+        cur[i*3]=base[i*3]; cur[i*3+1]=base[i*3+1]; cur[i*3+2]=base[i*3+2];
       }
       const ptGeo = new THREE.BufferGeometry();
-      ptGeo.setAttribute('position', new THREE.Float32BufferAttribute(ptPos, 3));
-      const ptMat = new THREE.PointsMaterial({ color: 0xC9A05C, size: 0.022, transparent: true, opacity: 0.32 });
-      const pts   = new THREE.Points(ptGeo, ptMat);
+      ptGeo.setAttribute('position', new THREE.BufferAttribute(cur, 3));
+      const pts = new THREE.Points(ptGeo, new THREE.PointsMaterial({ color:0xC9A05C, size:0.05, transparent:true, opacity:0.55 }));
+      group.add(pts);
 
-      const group = new THREE.Group();
-      group.add(icoA, icoB, pts);
-      /* offset group to the right so it doesn't sit dead-center behind text */
-      group.position.x = 1.2;
-      scene.add(group);
-
-      /* ── resize ──────────────────────────────────────────── */
-      function resize() {
-        const w = heroEl.clientWidth;
-        const h = heroEl.clientHeight;
-        renderer.setSize(w, h, false);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
+      const pairs = [];
+      for (let i=0;i<N;i++) for (let j=i+1;j<N;j++){
+        const dx=base[i*3]-base[j*3], dy=base[i*3+1]-base[j*3+1], dz=base[i*3+2]-base[j*3+2];
+        if (dx*dx+dy*dy+dz*dz < 5.5) pairs.push(i,j);
       }
-      resize();
-      window.addEventListener('resize', resize);
+      const linePos = new Float32Array(pairs.length*3);
+      const lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos, 3));
+      const lattice = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({ color:0xC9A05C, transparent:true, opacity:0.12 }));
+      group.add(lattice);
 
-      /* ── mouse parallax ──────────────────────────────────── */
-      let mx = 0, my = 0, ex = 0, ey = 0;
-      window.addEventListener('mousemove', e => {
-        mx = (e.clientX / innerWidth  - 0.5) * 2;
-        my = (e.clientY / innerHeight - 0.5) * 2;
-      });
+      function resize(){ const w=heroEl.clientWidth,h=heroEl.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+      resize(); window.addEventListener('resize', resize);
 
-      /* ── scroll progress ─────────────────────────────────── */
-      let scrollP = 0;
-      ScrollTrigger.create({
-        trigger: '#hero',
-        start: 'top top',
-        end:   'bottom top',
-        onUpdate: self => { scrollP = self.progress; },
-      });
+      let ex=0, ey=0, scrollP=0;
+      ScrollTrigger.create({ trigger:'#hero', start:'top top', end:'bottom top', onUpdate:s=>scrollP=s.progress });
+      let visible=true;
+      new IntersectionObserver(([e])=>visible=e.isIntersecting,{threshold:0}).observe(canvas);
+      let cal=0; gsap.to({v:0},{v:1,duration:1.6,ease:'power3.out',onUpdate(){cal=this.targets()[0].v;}});
 
-      /* ── visibility pause ────────────────────────────────── */
-      let visible = true;
-      new IntersectionObserver(
-        ([e]) => { visible = e.isIntersecting; },
-        { threshold: 0 }
-      ).observe(canvas);
-
-      /* ── render loop ─────────────────────────────────────── */
-      function tick() {
+      const posAttr=ptGeo.getAttribute('position'), lineAttr=lineGeo.getAttribute('position');
+      let t=0;
+      (function tick(){
         requestAnimationFrame(tick);
         if (!visible) return;
+        t+=0.01; ex+=(mx-ex)*0.045; ey+=(my-ey)*0.045; scrollVel*=0.9;
+        const turb=Math.min(Math.abs(scrollVel)*0.012,0.9), level=scrollP;
+        for (let i=0;i<N;i++){
+          const drift=Math.sin(t+i)*0.06;
+          cur[i*3]=base[i*3]+drift+(Math.random()-0.5)*turb;
+          cur[i*3+1]=base[i*3+1]*(1-level)+(Math.random()-0.5)*turb;
+          cur[i*3+2]=base[i*3+2]+Math.cos(t+i)*0.06;
+        }
+        posAttr.needsUpdate=true;
+        for (let k=0;k<pairs.length;k+=2){ const a=pairs[k]*3,b=pairs[k+1]*3,o=(k/2)*6;
+          linePos[o]=cur[a];linePos[o+1]=cur[a+1];linePos[o+2]=cur[a+2];
+          linePos[o+3]=cur[b];linePos[o+4]=cur[b+1];linePos[o+5]=cur[b+2]; }
+        lineAttr.needsUpdate=true;
+        // datum field waves, settles flat as you scroll (level)
+        const fAttr=fieldGeo.attributes.position;
+        for (let i=0;i<fAttr.count;i++){
+          const ox=fieldBase[i*3], oy=fieldBase[i*3+1];
+          const wave=Math.sin(ox*0.45+t*1.1)*0.55 + Math.cos(oy*0.55+t*0.8)*0.4;
+          fAttr.setZ(i, wave*(0.5+(1-level)*0.9));
+        }
+        fAttr.needsUpdate=true;
+        field.material.opacity=cal*0.22*(1-level*0.6);
+        field.position.x=-1.2+ex*0.5; field.position.y=-1.6-ey*0.4; field.rotation.z=ex*0.03;
+        const s=cal*(1-level*0.25);
+        icoA.scale.setScalar(s); icoB.scale.setScalar(cal);
+        icoA.rotation.y+=0.0024+turb*0.01; icoA.rotation.x=ey*0.20; icoA.rotation.z=level*Math.PI*0.3;
+        icoB.rotation.y-=0.001; icoB.rotation.x+=0.0006;
+        group.rotation.z=ex*0.04;
+        const fade=1-level*0.5; icoA.material.opacity=0.78*fade; lattice.material.opacity=0.12*fade;
+        camera.position.x+=(ex*0.6-camera.position.x)*0.055; camera.position.y+=(-ey*0.38-camera.position.y)*0.055;
+        camera.lookAt(scene.position); renderer.render(scene,camera);
+      })();
+    }
 
-        /* ease mouse */
-        ex += (mx - ex) * 0.042;
-        ey += (my - ey) * 0.042;
+    /* ═══════════ INSTRUMENT 3D — a spirit level whose bubble finds center ═══════════ */
+    function initLevel() {
+      const canvas = document.getElementById('canvas-level');
+      const wrap = canvas.parentElement;
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0);
 
-        /* inner — slow rotation + mouse tilt + scroll Z */
-        icoA.rotation.y += 0.0022;
-        icoA.rotation.x  = ey * 0.20;
-        icoA.rotation.z  = scrollP * Math.PI * 0.32;
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+      camera.position.set(0, 0.4, 7.2);
 
-        /* outer — counter-rotate slowly */
-        icoB.rotation.y -= 0.0009;
-        icoB.rotation.x += 0.0005;
+      const group = new THREE.Group(); scene.add(group);
 
-        /* particles drift */
-        pts.rotation.y += 0.0004;
+      /* the vial — horizontal translucent cylinder (wireframe) */
+      const vialLen = 6.4, vialR = 0.95;
+      const vial = new THREE.Mesh(
+        new THREE.CylinderGeometry(vialR, vialR, vialLen, 26, 1, true),
+        new THREE.MeshBasicMaterial({ color:0xC9A05C, wireframe:true, transparent:true, opacity:0.16 }));
+      vial.rotation.z = Math.PI/2; group.add(vial);
 
-        /* camera parallax */
-        camera.position.x += (ex * 0.6  - camera.position.x) * 0.055;
-        camera.position.y += (-ey * 0.38 - camera.position.y) * 0.055;
-        camera.lookAt(scene.position);
+      /* end caps */
+      [-1,1].forEach(d=>{
+        const cap = new THREE.Mesh(
+          new THREE.TorusGeometry(vialR, 0.015, 8, 30),
+          new THREE.MeshBasicMaterial({ color:0xC9A05C, transparent:true, opacity:0.4 }));
+        cap.rotation.y = Math.PI/2; cap.position.x = d*vialLen/2; group.add(cap);
+      });
 
-        renderer.render(scene, camera);
+      /* two reference rings marking the level zone (the datum) */
+      [-0.62, 0.62].forEach(x=>{
+        const ring = new THREE.Mesh(
+          new THREE.TorusGeometry(vialR, 0.012, 8, 30),
+          new THREE.MeshBasicMaterial({ color:0xE6C589, transparent:true, opacity:0.55 }));
+        ring.rotation.y = Math.PI/2; ring.position.x = x; group.add(ring);
+      });
+
+      /* tick marks along the top of the vial */
+      const tickG = new THREE.Group();
+      for (let i=-3;i<=3;i++){
+        if (i===0) continue;
+        const g = new THREE.BufferGeometry().setFromPoints([ new THREE.Vector3(i*0.85, vialR, 0), new THREE.Vector3(i*0.85, vialR+0.16, 0) ]);
+        tickG.add(new THREE.Line(g, new THREE.LineBasicMaterial({ color:0xC9A05C, transparent:true, opacity:0.3 })));
       }
-      tick();
+      group.add(tickG);
+
+      /* the bubble */
+      const bubble = new THREE.Mesh(
+        new THREE.SphereGeometry(0.5, 24, 24),
+        new THREE.MeshBasicMaterial({ color:0xE6C589, transparent:true, opacity:0.92 }));
+      group.add(bubble);
+      const halo = new THREE.Mesh(
+        new THREE.SphereGeometry(0.72, 20, 20),
+        new THREE.MeshBasicMaterial({ color:0xC9A05C, transparent:true, opacity:0.12 }));
+      group.add(halo);
+
+      function resize(){ const w=wrap.clientWidth,h=canvas.clientHeight||360; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+      resize(); window.addEventListener('resize', resize);
+
+      let center=0; /* 0 → off, 1 → dead level (when section centered) */
+      ScrollTrigger.create({ trigger:'#instrument', start:'top bottom', end:'bottom top',
+        onUpdate:s=>{ center = 1 - Math.min(1, Math.abs(s.progress-0.5)*2); } });
+
+      let visible=true;
+      new IntersectionObserver(([e])=>visible=e.isIntersecting,{threshold:0}).observe(canvas);
+
+      let bx=0, ex=0, ey=0, t=0;
+      const maxOff = vialLen/2 - vialR - 0.1;
+      (function tick(){
+        requestAnimationFrame(tick);
+        if (!visible) return;
+        t+=0.01; ex+=(mx-ex)*0.05; ey+=(my-ey)*0.05;
+        /* target: drift + mouse, pulled to center as section centers */
+        const drift = Math.sin(t*0.7)*0.5 + ex*1.4;
+        const target = drift * (1 - center);
+        bx += (target - bx)*0.06;
+        bx = Math.max(-maxOff, Math.min(maxOff, bx));
+        bubble.position.x = bx; halo.position.x = bx;
+        bubble.position.y = halo.position.y = Math.sin(t*1.3)*0.03;
+        /* glow brighter when level */
+        bubble.material.opacity = 0.85 + center*0.15;
+        halo.material.opacity = 0.10 + center*0.22;
+        /* gentle 3D tilt for depth */
+        group.rotation.y = ex*0.18 + Math.sin(t*0.4)*0.05;
+        group.rotation.x = -ey*0.12 - 0.06;
+        renderer.render(scene, camera);
+      })();
     }
 
-    if (!reduced && !mobile()) {
-      initScene();
-    } else {
-      heroEl.classList.add('no-3d');
+    /* boot 3D (desktop + motion only) */
+    if (!reduced && !mobile()) { initHero(); initLevel(); }
+    else { document.getElementById('hero').classList.add('no-3d'); document.getElementById('instrument').classList.add('no-3d'); }
+
+    /* ═══════════ CARD 3D TILT ═══════════ */
+    if (!reduced && finePointer) {
+      document.querySelectorAll('#svc-grid .svc-card').forEach(card => {
+        card.addEventListener('pointermove', e => {
+          const r = card.getBoundingClientRect();
+          const px = (e.clientX - r.left)/r.width - 0.5;
+          const py = (e.clientY - r.top)/r.height - 0.5;
+          card.style.transform = `rotateY(${px*5}deg) rotateX(${-py*5}deg) translateZ(10px)`;
+        });
+        card.addEventListener('pointerleave', () => { card.style.transform = ''; });
+      });
+
+      /* magnetic primary buttons */
+      document.querySelectorAll('.btn-primary').forEach(btn => {
+        btn.addEventListener('pointermove', e => {
+          const r = btn.getBoundingClientRect();
+          const x = (e.clientX - r.left - r.width/2) / r.width;
+          const y = (e.clientY - r.top - r.height/2) / r.height;
+          btn.style.transform = `translate(${x*7}px, ${y*6}px)`;
+        });
+        btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+      });
     }
 
-    /* ══════════════════════════════════════════════════════════
-       GSAP SCROLL REVEALS
-    ══════════════════════════════════════════════════════════ */
+    /* ═══════════ REVEALS / PARALLAX / PROCESS LINE ═══════════ */
     if (!reduced) {
-      gsap.utils.toArray('.reveal').forEach((el, i) => {
-        gsap.fromTo(el,
-          { opacity: 0, y: 22 },
-          {
-            opacity: 1, y: 0,
-            duration: 0.7,
-            ease: 'power3.out',
-            delay: (i % 3) * 0.07,
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 90%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
+      gsap.utils.toArray('.reveal').forEach((el,i)=>{
+        gsap.fromTo(el,{opacity:0,y:22},{opacity:1,y:0,duration:0.7,ease:'power3.out',delay:(i%3)*0.07,
+          scrollTrigger:{trigger:el,start:'top 90%',toggleActions:'play none none none'}});
       });
-
-      gsap.utils.toArray('.reveal-scale').forEach((el, i) => {
-        gsap.fromTo(el,
-          { opacity: 0, scale: 0.93 },
-          {
-            opacity: 1, scale: 1,
-            duration: 0.65,
-            ease: 'power2.out',
-            delay: i * 0.1,
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 88%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
+      gsap.utils.toArray('.reveal-scale').forEach((el,i)=>{
+        gsap.fromTo(el,{opacity:0,scale:0.93},{opacity:1,scale:1,duration:0.65,ease:'power2.out',delay:i*0.1,
+          scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'}});
       });
+      gsap.utils.toArray('[data-parallax]').forEach(el=>{
+        const sp=parseFloat(el.dataset.parallax)||0.1;
+        gsap.to(el,{yPercent:-sp*100,ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:true}});
+      });
+      ScrollTrigger.create({ trigger:'#steps-row', start:'top 75%', onEnter:()=>document.getElementById('steps-row').classList.add('lined') });
     } else {
-      document.querySelectorAll('.reveal, .reveal-scale').forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-      });
+      document.querySelectorAll('.reveal,.reveal-scale').forEach(el=>{el.style.opacity='1';el.style.transform='none';});
+      document.getElementById('steps-row').classList.add('lined');
     }
 
-    /* ══════════════════════════════════════════════════════════
-       PROOF COUNTERS
-    ══════════════════════════════════════════════════════════ */
-    document.querySelectorAll('[data-target]').forEach(el => {
-      const end    = parseFloat(el.dataset.target);
-      const suffix = el.dataset.suffix || '';
-      const isFloat = el.dataset.target.includes('.');
-      const obj   = { n: 0 };
-
-      gsap.to(obj, {
-        n: end,
-        duration: 1.9,
-        ease: 'power2.out',
-        onUpdate() {
-          el.textContent = isFloat
-            ? obj.n.toFixed(1) + suffix
-            : Math.round(obj.n)  + suffix;
-        },
-        onComplete() {
-          el.textContent = (isFloat ? end.toFixed(1) : end) + suffix;
-        },
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 86%',
-          toggleActions: 'play none none none',
-        },
-      });
+    /* ═══════════ PROOF COUNTERS ═══════════ */
+    document.querySelectorAll('[data-target]').forEach(el=>{
+      const end=parseFloat(el.dataset.target), suffix=el.dataset.suffix||'', isFloat=el.dataset.target.includes('.'), obj={n:0};
+      gsap.to(obj,{n:end,duration:1.9,ease:'power2.out',
+        onUpdate(){el.textContent=(isFloat?obj.n.toFixed(1):Math.round(obj.n))+suffix;},
+        onComplete(){el.textContent=(isFloat?end.toFixed(1):end)+suffix;},
+        scrollTrigger:{trigger:el,start:'top 86%',toggleActions:'play none none none'}});
     });
 
-    /* ══════════════════════════════════════════════════════════
-       CONTACT FORM
-    ══════════════════════════════════════════════════════════ */
+    /* ═══════════ CONTACT FORM → FormSubmit (AJAX, stays on page) ═══════════
+       Sends to ziahl1212@gmail.com. First real submission triggers a one-time
+       activation email from FormSubmit — click that link once to turn it on.
+       If JS fails, the native <form action> POST still works as a fallback.
+    ═════════════════════════════════════════════════════════════════════════ */
+    const FORMSUBMIT_AJAX = 'https://formsubmit.co/ajax/ziahl1212@gmail.com';
     const form = document.getElementById('contact-form');
     const note = document.getElementById('form-note');
+    const submitBtn = form.querySelector('button[type=submit]');
 
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', async e => {
       e.preventDefault();
       const name = form.querySelector('[name=name]').value.trim();
       const email = form.querySelector('[name=email]').value.trim();
-      const org   = form.querySelector('[name=organization]').value.trim();
-      const msg   = form.querySelector('[name=message]').value.trim();
+      const org = form.querySelector('[name=organization]').value.trim();
+      const msg = form.querySelector('[name=message]').value.trim();
+      const honey = form.querySelector('[name=_honey]').value;
 
-      if (!name || !email || !msg) {
-        note.className = 'form-note err';
-        note.textContent = 'Please fill in your name, email, and message.';
-        return;
+      if (honey) { note.className='form-note ok'; note.textContent='Thanks — your message is in.'; form.reset(); return; }
+      if (!name || !email || !msg) { note.className='form-note err'; note.textContent='Please fill in your name, email, and message.'; return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { note.className='form-note err'; note.textContent='Please enter a valid email address.'; return; }
+
+      const original = submitBtn.innerHTML;
+      submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; note.style.display='none';
+      try {
+        const res = await fetch(FORMSUBMIT_AJAX, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+          body: JSON.stringify({ name, email, organization:org, message:msg,
+            _subject:'New inquiry — Level Set Advisory', _template:'table', _captcha:'false' })
+        });
+        const data = await res.json().catch(()=>({}));
+        if (res.ok && (data.success === true || data.success === 'true')) {
+          note.className='form-note ok';
+          note.textContent="Thanks — your message is in. I'll reply within one business day.";
+          form.reset();
+        } else {
+          note.className='form-note err';
+          note.textContent = data.message || 'Something went wrong. Please email ziahl1212@gmail.com directly.';
+        }
+      } catch {
+        note.className='form-note err';
+        note.textContent='Network error. Please email ziahl1212@gmail.com directly.';
+      } finally {
+        submitBtn.disabled=false; submitBtn.innerHTML=original;
       }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        note.className = 'form-note err';
-        note.textContent = 'Please enter a valid email address.';
-        return;
-      }
-
-      const sub  = encodeURIComponent(`Inquiry${org ? ' from ' + org : ''} — Level Set Advisory`);
-      const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}${org ? '\nOrganization: ' + org : ''}\n\n${msg}`
-      );
-      window.location.href = `mailto:hello@levelsetadvisory.com?subject=${sub}&body=${body}`;
-
-      note.className = 'form-note ok';
-      note.textContent = 'Your email client should open with the message pre-filled. Hit send when ready.';
-      form.reset();
     });
   </script>
 </body>
